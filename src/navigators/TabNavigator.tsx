@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import HomeScreen from '../screens/HomeScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import CartScreen from '../screens/CartScreen';
-import OrderHistoryScreen from '../screens/OrderHistory.Screen';
+import OrderHistoryScreen from '../screens/OrderHistoryScreen';
 
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
@@ -36,7 +36,7 @@ const TabNavigator = () => {
                         <CustomIcon
                             name='home'
                             size={25}
-                            color={focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex}
+                            color={focused ? COLORS.primaryOrangeHex : COLORS.primaryDarkGreyHex}
                         />
                     )
                 }}>
@@ -50,7 +50,7 @@ const TabNavigator = () => {
                         <CustomIcon
                             name='cart'
                             size={25}
-                            color={focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex}
+                            color={focused ? COLORS.primaryOrangeHex : COLORS.primaryDarkGreyHex}
                         />
                     )
                 }}>
@@ -63,7 +63,7 @@ const TabNavigator = () => {
                         <CustomIcon
                             name='like'
                             size={25}
-                            color={focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex}
+                            color={focused ? COLORS.primaryOrangeHex : COLORS.primaryDarkGreyHex}
                         />
                     )
                 }}>
@@ -76,7 +76,7 @@ const TabNavigator = () => {
                         <CustomIcon
                             name='bell'
                             size={25}
-                            color={focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex}
+                            color={focused ? COLORS.primaryOrangeHex : COLORS.primaryDarkGreyHex}
                         />
                     )
                 }}>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     tabBarStyle: {
         height: 80,
         position: 'absolute',
-        backgroundColor: COLORS.primaryBlackRGBA,
+        backgroundColor: COLORS.primaryWhiteHex,
         borderTopWidth: 0,
         elevation: 0,
         borderTopColor: 'transparent',
