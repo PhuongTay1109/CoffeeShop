@@ -9,7 +9,7 @@ import OrderHistoryScreen from '../screens/OrderHistoryScreen';
 
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
-import { BlurView } from '@react-native-community/blur';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -18,20 +18,20 @@ const TabNavigator = () => {
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarHideOnKeyboard: true,
-                tabBarShowLabel: false,
-                tabBarStyle: styles.tabBarStyle,
-                tabBarBackground: () => (
-                    <BlurView
-                        overlayColor=''
-                        blurAmount={15}
-                        style={styles.blurViewStyles} />
-                )
+                tabBarStyle: {
+                height: 60,
+                position: 'absolute',
+                margin: 16,
+                borderRadius: 16,
+                justifyContent: 'center',
+                alignItems: 'center',
+                }
             }}>
             <Tab.Screen
                 name='Home'
                 component={HomeScreen}
                 options={{
+                    tabBarShowLabel: false,
                     tabBarIcon: ({ focused }) => (
                         <CustomIcon
                             name='home'
@@ -46,6 +46,7 @@ const TabNavigator = () => {
                 name='Cart'
                 component={CartScreen}
                 options={{
+                    tabBarShowLabel: false,
                     tabBarIcon: ({ focused }) => (
                         <CustomIcon
                             name='cart'
@@ -59,6 +60,7 @@ const TabNavigator = () => {
                 name='Favorite'
                 component={FavoritesScreen}
                 options={{
+                    tabBarShowLabel: false,
                     tabBarIcon: ({ focused }) => (
                         <CustomIcon
                             name='like'
@@ -72,6 +74,7 @@ const TabNavigator = () => {
                 name='History'
                 component={OrderHistoryScreen}
                 options={{
+                    tabBarShowLabel: false,
                     tabBarIcon: ({ focused }) => (
                         <CustomIcon
                             name='bell'
