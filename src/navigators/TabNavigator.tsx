@@ -43,7 +43,6 @@ const TabNavigator = () => {
                     )
                 }}>
             </Tab.Screen>
-
             <Tab.Screen
                 name='Cart'
                 component={CartScreen}
