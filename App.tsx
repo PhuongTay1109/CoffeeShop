@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -6,13 +8,15 @@ import HomeScreen from './src/screens/HomeScreen';
 import DetailsScreen from './src/screens/DetailsScreen';
 import PaymentScreen from './src/screens/PaymentScreen';
 import TabNavigator from './src/navigators/TabNavigator';
+import LoginScreen from './src/screens/LoginScreen';
 
 const Stack = createNativeStackNavigator();
 
-const App = () => {
+export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator 
+        screenOptions={{headerShown: false}}>
         <Stack.Screen 
           name='Tab' 
           component={TabNavigator} 
@@ -32,4 +36,4 @@ const App = () => {
 
 const styles = StyleSheet.create({});
 
-export default App;
+
