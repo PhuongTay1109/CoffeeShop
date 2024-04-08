@@ -9,6 +9,7 @@ import DetailsScreen from './src/screens/DetailsScreen';
 import PaymentScreen from './src/screens/PaymentScreen';
 import TabNavigator from './src/navigators/TabNavigator';
 import LoginScreen from './src/screens/LoginScreen';
+import SignupScreen from './src/screens/SignupScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,17 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        screenOptions={{headerShown: false}}>
+        screenOptions={{headerShown: false}}
+        initialRouteName='Login'
+        >
+        <Stack.Screen 
+          name='Login' 
+          component={LoginScreen} 
+          options={{ animation: 'slide_from_bottom' }}></Stack.Screen>
+        <Stack.Screen 
+          name='Signup' 
+          component={SignupScreen} 
+          options={{ animation: 'slide_from_bottom' }}></Stack.Screen>
         <Stack.Screen 
           name='Tab' 
           component={TabNavigator} 
@@ -35,5 +46,4 @@ export default function App() {
 };
 
 const styles = StyleSheet.create({});
-
 

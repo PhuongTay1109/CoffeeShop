@@ -4,9 +4,9 @@ import {View, Text, StyleSheet, TextInput} from 'react-native'
 import React from 'react'
 import { COLORS, FONTFAMILY, FONTSIZE } from '../theme/theme'
 
-const Input = (props) => {
-    const onChangeText = (text) => {
-        props.onInputChange(props.id, text)
+const Input = (props: any) => {
+    const onChangeText = (text: any) => {
+        props.onInputChanged(props.id, text)
     }
 
     return (
@@ -15,6 +15,7 @@ const Input = (props) => {
                 style={[styles.inputContainer, {borderColor: COLORS.primaryDarkGreyHex}]}>
                 <TextInput
                     {...props}
+                    value={props.value}
                     placeholder={props.placeholder}
                     placeholderTextColor={props.placeholderTextColor}
                     style={styles.input}
@@ -61,11 +62,14 @@ const styles = StyleSheet.create({
         fontSize: FONTSIZE.size_18
     },
     errorContainer: {
-        marginVertical: 4
+        marginVertical: 4,
+        justifyContent: 'center', 
+        alignSelf: 'flex-start',
+        paddingHorizontal: 60
     },
     errorText: {
         color: "red",
-        fontSize: FONTSIZE.size_18
+        fontSize: FONTSIZE.size_14
     }
 
 })
