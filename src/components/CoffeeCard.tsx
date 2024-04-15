@@ -21,20 +21,31 @@ import BGIcon from './BGIcon';
 
 const CARD_WIDTH = Dimensions.get('window').width * 0.32;
 
-// interface CoffeeCardProps {
-//   id: string;
-//   index: number;
-//   type: string;
-//   roasted: string;
-//   imagelink_square: ImageProps;
-//   name: string;
-//   special_ingredient: string;
-//   average_rating: number;
-//   price: any;
-//   buttonPressHandler: any;
-// }
+interface CoffeeCardProps {
+    id: string;
+    index: number;
+    type: string;
+    roasted: string;
+    imagelink_square: ImageProps;
+    name: string;
+    special_ingredient: string;
+    average_rating: number;
+    price: any;
+    buttonPressHandler: any;
+}
 
-const CoffeeCard = () => {
+const CoffeeCard: React.FC<CoffeeCardProps> = ({
+    id,
+    index,
+    type,
+    roasted,
+    imagelink_square,
+    name,
+    special_ingredient,
+    average_rating,
+    price,
+    buttonPressHandler,
+}) => {
     return (
             <LinearGradient
                 start={{x: 0, y: 0}}
@@ -42,31 +53,42 @@ const CoffeeCard = () => {
                 style={styles.CardLinearGradientContainer}
                 colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}>
                 <ImageBackground
-                    source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.png")}
+                    source={imagelink_square}
                     style={styles.CardImageBG}
                     resizeMode="cover">
                     <View style={styles.CardRatingContainer}>
-                    <CustomIcon
-                        name={'star'}
-                        color={COLORS.primaryOrangeHex}
-                        size={FONTSIZE.size_16}
-                    />
-                    <Text style={styles.CardRatingText}>4.2</Text>
+                        <CustomIcon
+                            name={'star'}
+                            color={COLORS.primaryOrangeHex}
+                            size={FONTSIZE.size_16}
+                        />
+                        <Text style={styles.CardRatingText}>{average_rating}</Text>
                     </View>
                 </ImageBackground>
-                <Text style={styles.CardTitle}>Americano</Text>
-                <Text style={styles.CardSubtitle}>With Foam</Text>
+                <Text style={styles.CardTitle}>{name}</Text>
+                <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
                 <View style={styles.CardFooterRow}>
                     <Text style={styles.CardPriceCurrency}>
-                    $ <Text style={styles.CardPrice}>4.20</Text>
+                    $ <Text style={styles.CardPrice}>{price.price}</Text>
                     </Text>
-                    <TouchableOpacity>
-                    <BGIcon
-                        color={COLORS.primaryWhiteHex}
-                        name={'add'}
-                        BGColor={COLORS.primaryOrangeHex}
-                        size={FONTSIZE.size_10}
-                    />
+                    <TouchableOpacity onPress={() => {
+                        buttonPressHandler({
+                            id,
+                            index,
+                            type,
+                            roasted,
+                            imagelink_square,
+                            name,
+                            special_ingredient,
+                            prices: [{...price, quantity: 1}],
+                            });
+                    }}>
+                        <BGIcon
+                            color={COLORS.primaryWhiteHex}
+                            name={'add'}
+                            BGColor={COLORS.primaryOrangeHex}
+                            size={FONTSIZE.size_10}
+                        />
                     </TouchableOpacity>
                 </View>
             </LinearGradient>

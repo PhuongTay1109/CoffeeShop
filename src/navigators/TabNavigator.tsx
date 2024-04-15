@@ -23,7 +23,7 @@ const TabNavigator = () => {
                 tabBarStyle: {
                 height: 60,
                 position: 'absolute',
-                margin: 16,
+                margin: 10,
                 borderRadius: 16,
                 justifyContent: 'center',
                 alignItems: 'center',
