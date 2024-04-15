@@ -51,6 +51,7 @@ const getCategoriesFromData = (data: any) => {
 };
 
 const HomeScreen = ({navigation}: any) => {
+
     const CoffeeList = useStore((state: any) => state.CoffeeList);
     const addToCart = useStore((state: any) => state.addToCart);
     const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
@@ -223,13 +224,12 @@ const HomeScreen = ({navigation}: any) => {
                     {/* Coffee list */}
                     <FlatList
                         ref={ListRef}
-                        horizontal
                         ListEmptyComponent={
                             <View style={styles.EmptyListContainer}>
                                 <Text style={styles.CategoryText}>No Coffee Available</Text>
                             </View>
                         }
-                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
                         data={sortedCoffee}
                         contentContainerStyle={styles.FlatListContainer}
                         keyExtractor={item => item.id}
@@ -355,9 +355,14 @@ const HomeScreen = ({navigation}: any) => {
             backgroundColor: COLORS.primaryOrangeHex,
         },
         FlatListContainer: {
-            gap: SPACING.space_20,
+            gap: SPACING.space_15,
             paddingHorizontal: SPACING.space_30,
-            paddingBottom: SPACING.space_28
+            paddingBottom: SPACING.space_28,
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent:'space-evenly',
+            marginBottom: 50
         },
         EmptyListContainer: {
             width: Dimensions.get('window').width - SPACING.space_30 * 2,

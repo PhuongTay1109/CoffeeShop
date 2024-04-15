@@ -20,6 +20,7 @@ import CustomIcon from './CustomIcon';
 import BGIcon from './BGIcon';
 
 const CARD_WIDTH = Dimensions.get('window').width * 0.32;
+const CARD_HEIGHT = Dimensions.get('window').width * 0.32;
 
 interface CoffeeCardProps {
     id: string;
@@ -104,10 +105,12 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2}, // Offset của shadow
         shadowOpacity: 0.5, // Độ trong suốt của shadow
         shadowRadius: 1, // Bán kính của shadow
+        width: 142,
+        height: 250,
     },
     CardImageBG: {
         width: CARD_WIDTH,
-        height: CARD_WIDTH,
+        height: CARD_HEIGHT,
         borderRadius: BORDERRADIUS.radius_20,
         marginBottom: SPACING.space_15,
         overflow: 'hidden',
