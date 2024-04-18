@@ -44,9 +44,9 @@ const CartItem = () => {
                     <View style={styles.CartItemSizeRowContainer}>
                     <View style={styles.CartItemSizeValueContainer}>
                         <View style={styles.SizeBox}>
-                        <Text style={[styles.SizeText,{ fontSize: FONTSIZE.size_16,},]}>
-                            S
-                        </Text>
+                            <Text style={[styles.SizeText,{ fontSize: FONTSIZE.size_16,},]}>
+                                S
+                            </Text>
                         </View>
                         <Text style={styles.SizeCurrency}>
                         $
@@ -64,16 +64,16 @@ const CartItem = () => {
                         />
                         </TouchableOpacity>
                         <View style={styles.CartItemQuantityContainer}>
-                        <Text style={styles.CartItemQuantityText}>
-                            1
-                        </Text>
+                            <Text style={styles.CartItemQuantityText}>
+                                1
+                            </Text>
                         </View>
                         <TouchableOpacity style={styles.CartItemIcon}>
-                        <CustomIcon
-                            name="add"
-                            color={COLORS.primaryWhiteHex}
-                            size={FONTSIZE.size_10}
-                        />
+                            <CustomIcon
+                                name="add"
+                                color={COLORS.primaryWhiteHex}
+                                size={FONTSIZE.size_10}
+                            />
                         </TouchableOpacity>
                     </View>
                     </View>
@@ -211,10 +211,11 @@ const styles = StyleSheet.create({
     SizeBox: {
         backgroundColor: COLORS.primaryBlackHex,
         height: 40,
-        width: 100,
+        width: 90,
         borderRadius: BORDERRADIUS.radius_10,
         justifyContent: 'center',
         alignItems: 'center',
+        marginRight: SPACING.space_8,
     },
     SizeText: {
         fontFamily: FONTFAMILY.poppins_medium,
@@ -235,12 +236,13 @@ const styles = StyleSheet.create({
     },
     CartItemQuantityContainer: {
         backgroundColor: COLORS.primaryWhiteHex,
-        width: 80,
+        width: 70,
         borderRadius: BORDERRADIUS.radius_10,
         borderWidth: 2,
         borderColor: COLORS.primaryOrangeHex,
         alignItems: 'center',
         paddingVertical: SPACING.space_4,
+        marginHorizontal: SPACING.space_4,
     },
     CartItemQuantityText: {
         fontFamily: FONTFAMILY.poppins_semibold,
