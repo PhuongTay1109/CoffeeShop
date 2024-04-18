@@ -1,23 +1,26 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+/*eslint-disable */
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
-import ProfilePic from './ProfilePic';
-import GradientBGIcon from './GradientBGIcon';
+import {COLORS, FONTFAMILY, SPACING} from '../theme/theme';
+import auth from '@react-native-firebase/auth';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface HeaderBarProps {
   title?: string;
 }
 
-const HeaderBar: React.FC<HeaderBarProps> = ({title}) => {
+const user = auth().currentUser;
+const username = user ? user.displayName : '';
+
+const HeaderBar: React.FC<HeaderBarProps> = () => {
     return (
         <View style={styles.HeaderContainer}>
-            <GradientBGIcon
-            name="menu"
-            color={COLORS.primaryWhiteHex}
-            size={FONTSIZE.size_16}
-            />
-            <Text style={styles.HeaderText}>{title}</Text>
-            <ProfilePic />
+            <Text style={styles.HeaderText}>COFFEE SHOP</Text>
+            <Text style={styles.Username}>
+                <Icon name="caret-down" size={14} color="#fff"/>
+                {' '}
+                {username}
+            </Text>
         </View>
     );
 };
@@ -31,9 +34,15 @@ const styles = StyleSheet.create({
     },
     HeaderText: {
         fontFamily: FONTFAMILY.poppins_semibold,
-        fontSize: FONTSIZE.size_20,
-        color: COLORS.primaryBlackHex,
+        fontSize: 26,
+        color: COLORS.primaryWhiteHex,
     },
+    Username: {
+        fontFamily: FONTFAMILY.poppins_medium,
+        fontSize: 14,
+        color: COLORS.primaryWhiteHex,
+        textAlign: 'right'
+    }
 });
 
 export default HeaderBar;
