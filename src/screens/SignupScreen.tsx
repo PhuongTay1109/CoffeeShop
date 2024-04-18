@@ -29,8 +29,8 @@ const isTestMode = true;
 const initialState = {
     inputValues: {
         email: isTestMode ? "example@example.com" : "",
-        password: isTestMode ? "******" : ""
-
+        password: isTestMode ? "******" : "",
+        username: "",
     },
     inputValidities: {
         email: false,
@@ -46,21 +46,35 @@ const SignupScreen = () => {
     const [formState, setFormState] = useReducer(reducer, initialState);
 
     const inputChangedHandler = useCallback((inputId: any, inputValue: any) => {
-        const result = validateInput(inputId, inputValue);
-        setFormState({ 
-            inputId, 
-            validationResult: result, 
-            inputValue });
+        // Không validate cho trường username
+        if (inputId !== 'username') {
+            const result = validateInput(inputId, inputValue);
+            setFormState({ 
+                inputId, 
+                validationResult: result, 
+                inputValue 
+            });
+        } else {
+            setFormState({ 
+                inputId, 
+                validationResult: true, 
+                inputValue 
+            });
+        }
     }, [setFormState])
 
     const authHandler = async () => {
         try {
             setIsLoading(true);
-            // Đăng ký người dùng mới sử dụng email và mật khẩu
-            await auth().createUserWithEmailAndPassword(formState.inputValues.email, formState.inputValues.password);
+            await auth().createUserWithEmailAndPassword(
+                formState.inputValues.email,
+                formState.inputValues.password
+            );
+            await auth().currentUser.updateProfile({
+                displayName: formState.inputValues.username
+            });
             setIsLoading(false);
-            // Chuyển hướng sau khi đăng ký thành công
-            navigation.navigate('Login'); // Chuyển hướng đến trang đăng nhập
+            navigation.navigate('Login');
         } catch (error: any) {
             setIsLoading(false);
             if (error.code === 'auth/email-already-in-use') {
@@ -90,6 +104,12 @@ const SignupScreen = () => {
                         <Text style={styles.welcomeText}>Sign up now for free</Text>
                     </View>
                     <View>
+                        <Input
+                            id="username"
+                            placeholder="Username"
+                            placeholderTextColor={COLORS.primaryDarkGreyHex}
+                            onInputChanged={inputChangedHandler}
+                        />
                         <Input
                             id="email"
                             placeholder="Email Address"

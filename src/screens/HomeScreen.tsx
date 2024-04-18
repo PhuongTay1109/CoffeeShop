@@ -149,7 +149,7 @@ const HomeScreen = ({navigation}: any) => {
                         <TouchableOpacity onPress={() => {
                             searchCoffee(searchText);
                         }}>
-                            <Image source={require("../assets/app_images/search.png")} style={{height:20, width:20, marginHorizontal: SPACING.space_20}} />
+                        <Image source={require("../assets/app_images/search.png")} style={{height:20, width:20, marginHorizontal: SPACING.space_20}} />
                         </TouchableOpacity>
                         <TextInput
                             style={styles.TextInputContainer}
