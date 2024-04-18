@@ -1,22 +1,15 @@
-/* eslint-disable */
-
-import { 
-    Image, 
-    StyleSheet, 
-    Text, 
-    View, 
-    TouchableOpacity, 
-    Alert} 
-from "react-native";
+/*eslint-disable */
 
 import React, { useCallback, useReducer, useState } from "react";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import { COLORS, FONTFAMILY, FONTSIZE } from "../theme/theme";
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import { COLORS, FONTFAMILY, FONTSIZE } from "../theme/theme";
+import Input from "../components/Input";
+import Button from "../components/Button";
 import { reducer } from "../utils/FormReducers";
 import { validateInput } from "../utils/FormActions";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const isTestMode = true;
 const initialState = {
@@ -37,14 +30,20 @@ const LoginScreen = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [formState, setFormState] = useReducer(reducer, initialState);
+    const [hidePassword, setHidePassword] = useState(true);
+
+    const togglePasswordVisibility = () => {
+        setHidePassword(!hidePassword);
+    };
 
     const inputChangedHandler = useCallback((inputId: any, inputValue: any) => {
         const result = validateInput(inputId, inputValue);
         setFormState({ 
             inputId, 
             validationResult: result, 
-            inputValue });
-    }, [setFormState])
+            inputValue 
+        });
+    }, [setFormState]);
 
     const authHandler = async () => {
         try {
@@ -60,7 +59,7 @@ const LoginScreen = () => {
 
     return (
         <View style={styles.container}>
-           <View>
+            <View>
                 <Image
                     source={require("../assets/app_images/coffee-branch.jpg")}
                     style={styles.topImage}
@@ -79,31 +78,28 @@ const LoginScreen = () => {
                     errorText={formState.inputValidities["email"]}
                     onInputChanged={inputChangedHandler}
                 />
-                <Input
-                    id="password"                    
-                    placeholder="Password"
-                    placeholderTextColor={COLORS.primaryDarkGreyHex}
-                    errorText={formState.inputValidities["password"]}
-                    onInputChanged={inputChangedHandler}
-                />
+                <View style={styles.passwordInputContainer}>
+                    <Input
+                        id="password"                    
+                        placeholder="Password"
+                        placeholderTextColor={COLORS.primaryDarkGreyHex}
+                        errorText={formState.inputValidities["password"]}
+                        onInputChanged={inputChangedHandler}
+                        secureTextEntry={hidePassword}
+                    />
+                    <TouchableOpacity style={styles.toggleVisibilityIcon} onPress={togglePasswordVisibility}>
+                        <Icon name={hidePassword ? 'eye-slash' : 'eye'} size={20} color={COLORS.primaryGreyHex} />
+                    </TouchableOpacity>
+                </View>
                 <Button
                     title="LOGIN"
                     onPress={authHandler}
                 />
             </View>
             <View style={styles.bottomContainer}>
-                <Text style={{color: COLORS.primaryLightGreyHex, 
-                            fontFamily: FONTFAMILY.poppins_regular,
-                            fontSize: FONTSIZE.size_16}}>
-                    Don't have an account ?
-                </Text>
+                <Text style={styles.registerText}>Don't have an account ?</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                    <Text style={{color: COLORS.primaryLightGreyHex, 
-                            fontFamily: FONTFAMILY.poppins_bold,
-                            paddingLeft: 5,
-                            fontSize: FONTSIZE.size_16}}>
-                        Register now
-                    </Text>
+                    <Text style={styles.registerLink}>Register now</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -141,7 +137,27 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         marginVertical: 2
-    }
+    },
+    registerText: {
+        color: COLORS.primaryLightGreyHex, 
+        fontFamily: FONTFAMILY.poppins_regular,
+        fontSize: FONTSIZE.size_16
+    },
+    registerLink: {
+        color: COLORS.primaryLightGreyHex, 
+        fontFamily: FONTFAMILY.poppins_bold,
+        paddingLeft: 5,
+        fontSize: FONTSIZE.size_16
+    },
+    passwordInputContainer: {
+        position: 'relative'
+    },
+    toggleVisibilityIcon: {
+        position: 'absolute',
+        top: '50%',
+        right: 50,
+        transform: [{ translateY: -20}]
+    },
 });
 
 export default LoginScreen;

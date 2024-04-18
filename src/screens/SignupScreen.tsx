@@ -24,6 +24,7 @@ import { reducer } from "../utils/FormReducers";
 import { validateInput } from "../utils/FormActions";
 import { SafeAreaView } from "react-native-safe-area-context";
 import auth from '@react-native-firebase/auth';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const isTestMode = true;
 const initialState = {
@@ -41,24 +42,28 @@ const initialState = {
 
 const SignupScreen = () => {
     const navigation = useNavigation();
-
     const [isLoading, setIsLoading] = useState(false);
     const [formState, setFormState] = useReducer(reducer, initialState);
+    const [hidePassword, setHidePassword] = useState(true);
+
+    const togglePasswordVisibility = () => {
+        setHidePassword(!hidePassword);
+    };
 
     const inputChangedHandler = useCallback((inputId: any, inputValue: any) => {
         // Không validate cho trường username
         if (inputId !== 'username') {
             const result = validateInput(inputId, inputValue);
-            setFormState({ 
-                inputId, 
-                validationResult: result, 
-                inputValue 
+            setFormState({
+                inputId,
+                validationResult: result,
+                inputValue
             });
         } else {
-            setFormState({ 
-                inputId, 
-                validationResult: true, 
-                inputValue 
+            setFormState({
+                inputId,
+                validationResult: true,
+                inputValue
             });
         }
     }, [setFormState])
@@ -79,7 +84,7 @@ const SignupScreen = () => {
             setIsLoading(false);
             if (error.code === 'auth/email-already-in-use') {
                 Alert.alert('That email address is already in use!');
-            }        
+            }
             Alert.alert(error);
         }
     };
@@ -87,7 +92,7 @@ const SignupScreen = () => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             enabled={Platform.OS === 'ios'}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -117,13 +122,19 @@ const SignupScreen = () => {
                             errorText={formState.inputValidities["email"]}
                             onInputChanged={inputChangedHandler}
                         />
-                        <Input
-                            id="password"
-                            placeholder="Password"
-                            placeholderTextColor={COLORS.primaryDarkGreyHex}
-                            errorText={formState.inputValidities["password"]}
-                            onInputChanged={inputChangedHandler}
-                        />
+                        <View style={styles.passwordInputContainer}>
+                            <Input
+                                id="password"
+                                placeholder="Password"
+                                placeholderTextColor={COLORS.primaryDarkGreyHex}
+                                errorText={formState.inputValidities["password"]}
+                                onInputChanged={inputChangedHandler}
+                                secureTextEntry={hidePassword}
+                            />
+                            <TouchableOpacity style={styles.toggleVisibilityIcon} onPress={togglePasswordVisibility}>
+                                <Icon name={hidePassword ? 'eye-slash' : 'eye'} size={20} color={COLORS.primaryGreyHex} />
+                            </TouchableOpacity>
+                        </View>
                         <Button
                             title="SIGN UP"
                             onPress={authHandler}
@@ -185,7 +196,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         marginVertical: 2
-    }
+    },
+    passwordInputContainer: {
+        position: 'relative'
+    },
+    toggleVisibilityIcon: {
+        position: 'absolute',
+        top: '50%',
+        right: 50,
+        transform: [{ translateY: -20}]
+    },
 });
 
 export default SignupScreen;
