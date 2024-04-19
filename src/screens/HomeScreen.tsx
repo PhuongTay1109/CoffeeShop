@@ -10,6 +10,7 @@ import {
     ToastAndroid,
     Image,
     FlatList,
+    ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react'
 import {
@@ -27,8 +28,12 @@ import { useStore } from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import CustomIcon from '../components/CustomIcon';
 import CoffeeData from '../data/CoffeeData';
+import useCoffeeData from '../data/UseCoffeeData';
 
 const getCategoriesFromData = (data: any) => {
+    if (!data || data.length === 0) {
+        return [];
+    }
     let temp: any = {};
     for (let i = 0; i < data.length; i++) {
         if (temp[data[i].name] == undefined) {
@@ -39,15 +44,20 @@ const getCategoriesFromData = (data: any) => {
     }
     let categories = Object.keys(temp);
     categories.unshift('All');
+    console.log(categories);
     return categories;
 };
 
+
 const getCoffeeList = (category: string, data: any) => {
-    if (category == 'All') {
+    if (!data || data.length === 0) {
+        return [];
+    }
+    if (category === 'All') {
         return data;
     } else {
-        let coffeelist = data.filter((item: any) => item.name == category);
-        return coffeelist;
+        let coffeeList = data.filter((item: any) => item.name === category);
+        return coffeeList;
     }
 };
 
@@ -55,30 +65,49 @@ const HomeScreen = ({ navigation }: any) => {
 
    // const CoffeeList = CoffeeData();
 
-    const CoffeeList = CoffeeData;
+    //const CoffeeList = CoffeeData;
+
+    const CoffeeList = useCoffeeData(); 
+    console.log(CoffeeList);
 
     const addToCart = useStore((state: any) => state.addToCart);
     const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
 
-    const [categories, setCategories] = useState(
-        getCategoriesFromData(CoffeeList),
-    );
-
+    const [categories, setCategories] = useState<string[]>([]);
     const [searchText, setSearchText] = useState('');
     const [categoryIndex, setCategoryIndex] = useState({
         index: 0,
-        category: categories[0],
+        category: 'All', // Khởi tạo giá trị mặc định là 'All'
     });
 
     const [sortedCoffee, setSortedCoffee] = useState(
-        getCoffeeList(categoryIndex.category, CoffeeList),
-    );
+        CoffeeList ? getCoffeeList(categoryIndex.category, CoffeeList) : []
+    );    
+
+    useEffect(() => {
+        if (CoffeeList) {
+            const initialCategories = getCategoriesFromData(CoffeeList);
+            setCategories(initialCategories);
+            // Cập nhật categoryIndex.category với giá trị mặc định 'All'
+            setCategoryIndex(prevState => ({ ...prevState, category: initialCategories[0] }));
+        }
+    }, [CoffeeList]);
+
+    // Di chuyển việc khởi tạo sortedCoffee vào trong useEffect
+    useEffect(() => {
+        if (CoffeeList) {
+            setSortedCoffee(getCoffeeList(categoryIndex.category, CoffeeList));
+        }
+    }, [CoffeeList, categoryIndex.category]);   
+
+    console.log("CATEGORIES: " + categories);
+    console.log("SORTED COFFEE: " + sortedCoffee);
 
     const ListRef: any = useRef<FlatList>();
     const tabBarHeight = useBottomTabBarHeight();
 
     const searchCoffee = (search: string) => {
-        if (search != '') {
+        if (search != '' && CoffeeList) { // Kiểm tra CoffeeList không phải null
             ListRef?.current?.scrollToOffset({
                 animated: true,
                 offset: 0,
@@ -91,17 +120,20 @@ const HomeScreen = ({ navigation }: any) => {
             ]);
         }
     };
+    
 
     const resetSearchCoffee = () => {
-        ListRef?.current?.scrollToOffset({
-            animated: true,
-            offset: 0,
-        });
-        setCategoryIndex({ index: 0, category: categories[0] });
-        setSortedCoffee([...CoffeeList]);
-        setSearchText('');
+        if (CoffeeList) {
+            ListRef?.current?.scrollToOffset({
+                animated: true,
+                offset: 0,
+            });
+            setCategoryIndex({ index: 0, category: categories[0] });
+            setSortedCoffee([...CoffeeList]);
+            setSearchText('');
+        }
     };
-
+    
     const CoffeCardAddToCart = ({
         id,
         index,
@@ -129,6 +161,16 @@ const HomeScreen = ({ navigation }: any) => {
             ToastAndroid.CENTER,
         );
     };
+    
+    if (!CoffeeList) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={COLORS.primaryOrangeHex} />
+                <Text style={styles.loadingText}>Loading...</Text>
+            </View>
+        );
+    }
+
     return (
         <View style={styles.ScreenContainer} >
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -242,6 +284,7 @@ const HomeScreen = ({ navigation }: any) => {
                         contentContainerStyle={styles.FlatListContainer}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) => {
+                            console.log(item.imagelink_square)
                             return (
                                 <TouchableOpacity
                                     activeOpacity={1.0}
@@ -256,7 +299,7 @@ const HomeScreen = ({ navigation }: any) => {
                                         id={item.id}
                                         index={item.index}
                                         type={item.type}
-                                        roasted={item.roasted}
+                                        roasted={item.roasted}                                        
                                         imagelink_square={item.imagelink_square}
                                         name={item.name}
                                         special_ingredient={item.special_ingredient}
@@ -266,6 +309,7 @@ const HomeScreen = ({ navigation }: any) => {
                                     />
                                 </TouchableOpacity>
                             );
+                            console.log(CoffeeCard);
                         }}
                     />
                 </View>
@@ -387,6 +431,17 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_medium,
         color: COLORS.secondaryLightGreyHex,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        marginTop: SPACING.space_10,
+        fontFamily: FONTFAMILY.poppins_regular, // Thay thế bằng font family của bạn
+        fontSize: FONTSIZE.size_16, // Thay thế bằng kích thước phù hợp
+        color: COLORS.primaryDarkGreyHex, // Thay thế bằng màu sắc phù hợp
+    }
 })
 
 export default HomeScreen

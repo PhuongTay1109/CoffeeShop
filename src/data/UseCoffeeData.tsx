@@ -28,7 +28,7 @@ interface Coffee {
   type: string;
 }
 
-const CoffeeData = (): Coffee[] | null => {
+const useCoffeeData = (): Coffee[] | null => {
   const [coffeeData, setCoffeeData] = useState<Coffee[] | null>(null);
 
   useEffect(() => {
@@ -60,9 +60,7 @@ const CoffeeData = (): Coffee[] | null => {
     fetchCoffeeData();
   }, []);
 
-  console.log("Coffee fetch: ", coffeeData);
-
   return coffeeData;
 };
 
-export default CoffeeData;
+export default useCoffeeData;
