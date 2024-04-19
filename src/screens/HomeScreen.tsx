@@ -11,7 +11,7 @@ import {
     Image,
     FlatList,
 } from 'react-native';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     BORDERRADIUS,
     COLORS,
@@ -26,6 +26,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useStore } from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import CustomIcon from '../components/CustomIcon';
+import CoffeeData from '../data/CoffeeData';
 
 const getCategoriesFromData = (data: any) => {
     let temp: any = {};
@@ -52,18 +53,23 @@ const getCoffeeList = (category: string, data: any) => {
 
 const HomeScreen = ({ navigation }: any) => {
 
-    const CoffeeList = useStore((state: any) => state.CoffeeList);
+   // const CoffeeList = CoffeeData();
+
+    const CoffeeList = CoffeeData;
+
     const addToCart = useStore((state: any) => state.addToCart);
     const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
 
     const [categories, setCategories] = useState(
         getCategoriesFromData(CoffeeList),
     );
+
     const [searchText, setSearchText] = useState('');
     const [categoryIndex, setCategoryIndex] = useState({
         index: 0,
         category: categories[0],
     });
+
     const [sortedCoffee, setSortedCoffee] = useState(
         getCoffeeList(categoryIndex.category, CoffeeList),
     );
