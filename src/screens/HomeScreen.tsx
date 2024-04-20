@@ -63,11 +63,11 @@ const getCoffeeList = (category: string, data: any) => {
 
 const HomeScreen = ({ navigation }: any) => {
 
-   // const CoffeeList = CoffeeData();
+//    // const CoffeeList = CoffeeData();
 
-    //const CoffeeList = CoffeeData;
+    const CoffeeList = CoffeeData;
 
-    const CoffeeList = useCoffeeData(); 
+//     const CoffeeList = useCoffeeData(); 
     console.log(CoffeeList);
 
     const addToCart = useStore((state: any) => state.addToCart);
@@ -284,7 +284,6 @@ const HomeScreen = ({ navigation }: any) => {
                         contentContainerStyle={styles.FlatListContainer}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) => {
-                            console.log(item.imagelink_square)
                             return (
                                 <TouchableOpacity
                                     activeOpacity={1.0}
@@ -300,6 +299,7 @@ const HomeScreen = ({ navigation }: any) => {
                                         index={item.index}
                                         type={item.type}
                                         roasted={item.roasted}                                        
+                                        //imagelink_square={{ uri: item.imagelink_square}}
                                         imagelink_square={item.imagelink_square}
                                         name={item.name}
                                         special_ingredient={item.special_ingredient}

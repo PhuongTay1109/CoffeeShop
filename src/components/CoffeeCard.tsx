@@ -5,6 +5,7 @@ import {
   Dimensions,
   ImageBackground,
   ImageProps,
+  //ImageSourcePropType,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -49,6 +50,7 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
     price,
     buttonPressHandler,
 }) => {
+    // console.log("image link: " + imagelink_square.uri);
     return (
             <LinearGradient
                 start={{x: 0, y: 0}}

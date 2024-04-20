@@ -1,3 +1,4 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "cmake.sourceDirectory": "D:/HocTap/Nam3/HK2/LapTrinhDiDong/CoffeeShop/node_modules/react-native/ReactAndroid/cmake-utils/default-app-setup"
 }
