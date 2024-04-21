@@ -19,7 +19,7 @@ const OrderItemCard = () => {
       style={styles.CardLinearGradient}>
       <View style={styles.CardInfoContainer}>
         <View style={styles.CardImageInfoContainer}>
-          <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.png")} style={styles.Image} />
+          <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.jpg")} style={styles.Image} />
           <View>
             <Text style={styles.CardTitle}>Americano</Text>
             <Text style={styles.CardSubtitle}>With Steamed Milk</Text>

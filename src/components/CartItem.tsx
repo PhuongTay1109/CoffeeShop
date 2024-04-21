@@ -28,7 +28,7 @@ const CartItem = () => {
                 colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
                 style={styles.CartItemLinearGradient}>
                 <View style={styles.CartItemRow}>
-                    <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.png")} style={styles.CartItemImage} />
+                    <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.jpg")} style={styles.CartItemImage} />
                     <View style={styles.CartItemInfo}>
                     <View>
                         <Text style={styles.CartItemTitle}>Americano</Text>
@@ -87,7 +87,7 @@ const CartItem = () => {
             colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
             style={styles.CartItemLinearGradient}>
             <View style={styles.CartItemRow}>
-                <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.png")} style={styles.CartItemImage} />
+                <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.jpg")} style={styles.CartItemImage} />
                 <View style={styles.CartItemInfo}>
                 <View>
                     <Text style={styles.CartItemTitle}>Americano</Text>
