@@ -23,11 +23,9 @@ import {
 import { Dimensions } from 'react-native';
 import HeaderBar from '../components/HeaderBar';
 import CoffeeCard from '../components/CoffeeCard';
-import { useNavigation } from '@react-navigation/native';
 import { useStore } from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import CustomIcon from '../components/CustomIcon';
-import CoffeeData from '../data/CoffeeData';
 import useCoffeeData from '../data/UseCoffeeData';
 
 const getCategoriesFromData = (data: any) => {
@@ -36,10 +34,10 @@ const getCategoriesFromData = (data: any) => {
     }
     let temp: any = {};
     for (let i = 0; i < data.length; i++) {
-        if (temp[data[i].name] == undefined) {
-            temp[data[i].name] = 1;
+        if (temp[data[i].type] == undefined) {
+            temp[data[i].type] = 1;
         } else {
-            temp[data[i].name]++;
+            temp[data[i].type]++;
         }
     }
     let categories = Object.keys(temp);
@@ -56,18 +54,19 @@ const getCoffeeList = (category: string, data: any) => {
     if (category === 'All') {
         return data;
     } else {
-        let coffeeList = data.filter((item: any) => item.name === category);
+        let coffeeList = data.filter((item: any) => item.type === category);
         return coffeeList;
     }
 };
 
 const HomeScreen = ({ navigation }: any) => {
 
-//    // const CoffeeList = CoffeeData();
+    // Khi fetch data, ban đầu CoffeeList sẽ null
+    // Sau khi data đã được lấy về, sẽ render lại
 
-    const CoffeeList = CoffeeData;
+    // const CoffeeList = CoffeeData;
 
-//     const CoffeeList = useCoffeeData(); 
+    const CoffeeList = useCoffeeData(); 
     console.log(CoffeeList);
 
     const addToCart = useStore((state: any) => state.addToCart);
@@ -77,7 +76,7 @@ const HomeScreen = ({ navigation }: any) => {
     const [searchText, setSearchText] = useState('');
     const [categoryIndex, setCategoryIndex] = useState({
         index: 0,
-        category: 'All', // Khởi tạo giá trị mặc định là 'All'
+        category: 'All', 
     });
 
     const [sortedCoffee, setSortedCoffee] = useState(
@@ -88,12 +87,10 @@ const HomeScreen = ({ navigation }: any) => {
         if (CoffeeList) {
             const initialCategories = getCategoriesFromData(CoffeeList);
             setCategories(initialCategories);
-            // Cập nhật categoryIndex.category với giá trị mặc định 'All'
             setCategoryIndex(prevState => ({ ...prevState, category: initialCategories[0] }));
         }
     }, [CoffeeList]);
 
-    // Di chuyển việc khởi tạo sortedCoffee vào trong useEffect
     useEffect(() => {
         if (CoffeeList) {
             setSortedCoffee(getCoffeeList(categoryIndex.category, CoffeeList));
@@ -115,7 +112,7 @@ const HomeScreen = ({ navigation }: any) => {
             setCategoryIndex({ index: 0, category: categories[0] });
             setSortedCoffee([
                 ...CoffeeList.filter((item: any) =>
-                    item.name.toLowerCase().includes(search.toLowerCase()),
+                    item.type.toLowerCase().includes(search.toLowerCase()),
                 ),
             ]);
         }

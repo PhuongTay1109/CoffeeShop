@@ -25,6 +25,8 @@ import { validateInput } from "../utils/FormActions";
 import { SafeAreaView } from "react-native-safe-area-context";
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import getFirestore from "@react-native-firebase/firestore";
+import CoffeeData from "../data/CoffeeData";
 
 const isTestMode = true;
 const initialState = {
@@ -78,6 +80,17 @@ const SignupScreen = () => {
             await auth().currentUser.updateProfile({
                 displayName: formState.inputValues.username
             });
+
+            // Thêm document mới cho người dùng trong Firestore
+            const userEmail = formState.inputValues.email;
+            const userDocRef = getFirestore().collection('users').doc(userEmail); // Sử dụng email làm id cho document
+            await userDocRef.set({
+                ProductsList: CoffeeData ,
+                CartList: [],
+                FavoritesList: [],
+                OrderList: []
+            });
+
             setIsLoading(false);
             navigation.navigate('Login');
         } catch (error: any) {
