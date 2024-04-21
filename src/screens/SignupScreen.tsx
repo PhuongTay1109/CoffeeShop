@@ -85,7 +85,10 @@ const SignupScreen = () => {
             const userEmail = formState.inputValues.email;
             const userDocRef = getFirestore().collection('users').doc(userEmail); // Sử dụng email làm id cho document
             await userDocRef.set({
-                ProductsList: CoffeeData 
+                ProductsList: CoffeeData ,
+                CartList: [],
+                FavoritesList: [],
+                OrderList: []
             });
 
             setIsLoading(false);
