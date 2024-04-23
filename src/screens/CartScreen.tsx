@@ -21,7 +21,6 @@ const CartScreen = () => {
     return (
         <View style={styles.ScreenContainer}>
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />
-
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.ScrollViewFlex}>
@@ -35,8 +34,6 @@ const CartScreen = () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-
-
                     <PaymentFooter />
                 </View>
             </ScrollView>
@@ -60,6 +57,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     ListItemContainer: {
+        marginTop:20,
         paddingHorizontal: SPACING.space_20,
         gap: SPACING.space_20,
     },

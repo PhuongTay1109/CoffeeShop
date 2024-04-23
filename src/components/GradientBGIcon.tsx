@@ -13,22 +13,21 @@ interface GradientBGIconProps {
 const GradientBGIcon: React.FC<GradientBGIconProps> = ({name, color, size}) => {
     return (
         <View style={styles.Container}>
-        <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            colors={[COLORS.primaryOrangeHex, COLORS.primaryOrangeHex]}
-            style={styles.LinearGradientBG}>
-            <CustomIcon name={name} color={color} size={size} />
-        </LinearGradient>
+            <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 1}}
+                colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
+                style={styles.LinearGradientBG}>
+                <CustomIcon name={name} color={color} size={size} />
+            </LinearGradient>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     Container: {
-        
         borderColor: COLORS.primaryWhiteHex,
-        borderRadius: SPACING.space_12,
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.primaryWhiteHex,
