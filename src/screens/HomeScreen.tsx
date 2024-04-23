@@ -178,7 +178,7 @@ const HomeScreen = ({ navigation }: any) => {
 
                     <View style={{ marginHorizontal: SPACING.space_30 }}>
                         <View style={styles.bannerContainer}>
-                            <Image source={require("../assets/coffee_assets/cappuccino/portrait/cappuccino_pic_2_portrait.png")} style={styles.banner} />
+                            <Image source={require("../assets/coffee_assets/latte/portrait/latte_pic_3_portrait.jpg")} style={styles.banner} />
                         </View>
                         <Text style={styles.ScreenTitle}>
                             <View>
@@ -251,17 +251,12 @@ const HomeScreen = ({ navigation }: any) => {
                                     <Text
                                         style={[
                                             styles.CategoryText,
-                                            categoryIndex.index == index
-                                                ? { color: COLORS.primaryOrangeHex }
-                                                : {},
-                                        ]}>
+                                            categoryIndex.index == index ? styles.CategoryActiveText : {},
+                                        ]}
+                                    >
                                         {data}
                                     </Text>
-                                    {categoryIndex.index == index ? (
-                                        <View style={styles.ActiveCategory} />
-                                    ) : (
-                                        <></>
-                                    )}
+                                    
                                 </TouchableOpacity>
                             </View>
                         ))}
@@ -270,13 +265,14 @@ const HomeScreen = ({ navigation }: any) => {
 
                     {/* Coffee list */}
                     <FlatList
+                        horizontal={true}
                         ref={ListRef}
                         ListEmptyComponent={
                             <View style={styles.EmptyListContainer}>
                                 <Text style={styles.CategoryText}>No Coffee Available</Text>
                             </View>
                         }
-                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
                         data={sortedCoffee}
                         contentContainerStyle={styles.FlatListContainer}
                         keyExtractor={item => item.id}
@@ -322,7 +318,7 @@ const styles = StyleSheet.create({
     },
     header: {
         backgroundColor: COLORS.primaryBlackHex,
-        height: 308
+        height: 352
     },
     footer: {
         marginTop: 50,
@@ -369,6 +365,13 @@ const styles = StyleSheet.create({
         color: COLORS.primaryOrangeHex,
         marginVertical: 40
     },
+    CategoryActiveText: {
+        color: COLORS.primaryWhiteHex,
+        backgroundColor: COLORS.primaryOrangeHex,
+        paddingVertical: 2,
+        borderRadius: BORDERRADIUS.radius_10,
+        paddingHorizontal: 7
+    },
     InputIcon: {
         marginHorizontal: SPACING.space_20,
     },
@@ -380,9 +383,9 @@ const styles = StyleSheet.create({
         color: COLORS.primaryOrangeHex,
     },
     CategoryScrollViewStyle: {
-        paddingHorizontal: SPACING.space_20,
-        marginBottom: SPACING.space_20,
-        marginTop: 30
+        paddingHorizontal: SPACING.space_16,
+        marginBottom: SPACING.space_16,
+        marginTop: 10
     },
     CategoryScrollViewContainer: {
         paddingHorizontal: SPACING.space_15,
@@ -399,15 +402,10 @@ const styles = StyleSheet.create({
         color: COLORS.primaryLightGreyHex,
         marginBottom: SPACING.space_4,
     },
-    ActiveCategory: {
-        height: SPACING.space_10,
-        width: SPACING.space_10,
-        borderRadius: BORDERRADIUS.radius_10,
-        backgroundColor: COLORS.primaryOrangeHex,
-    },
+
     FlatListContainer: {
-        gap: SPACING.space_15,
-        paddingHorizontal: SPACING.space_30,
+        gap: SPACING.space_8,
+        paddingHorizontal: SPACING.space_2,
         paddingBottom: SPACING.space_28,
         display: 'flex',
         flexDirection: 'row',

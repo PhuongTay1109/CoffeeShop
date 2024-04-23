@@ -22,8 +22,7 @@ import {
 import CustomIcon from './CustomIcon';
 import BGIcon from './BGIcon';
 
-const CARD_WIDTH = Dimensions.get('window').width * 0.32;
-const CARD_HEIGHT = Dimensions.get('window').width * 0.32;
+
 
 interface CoffeeCardProps {
     id: string;
@@ -64,7 +63,7 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
                     <View style={styles.CardRatingContainer}>
                         <CustomIcon
                             name={'star'}
-                            color={COLORS.primaryOrangeHex}
+                            color='yellow'
                             size={FONTSIZE.size_16}
                         />
                         <Text style={styles.CardRatingText}>{average_rating}</Text>
@@ -109,15 +108,15 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2}, // Offset của shadow
         shadowOpacity: 0.5, // Độ trong suốt của shadow
         shadowRadius: 1, // Bán kính của shadow
-        width: 142,
-        height: 250,
+        width: 200,
+        height: 270,
     },
     CardImageBG: {
-        width: CARD_WIDTH,
-        height: CARD_HEIGHT,
         borderRadius: BORDERRADIUS.radius_20,
         marginBottom: SPACING.space_15,
         overflow: 'hidden',
+        width: 165,
+        height: 120
     },
     CardRatingContainer: {
         flexDirection: 'row',
@@ -153,6 +152,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: SPACING.space_15,
+        position: 'absolute', // Đặt vị trí tuyệt đối
+        bottom: 15, // Cách bottom 15px
+        left: 0, // Đặt ở vị trí bên trái
+        right: 0, // Đặt ở vị trí bên phải
+        paddingHorizontal: SPACING.space_15,
     },
     CardPriceCurrency: {
         fontFamily: FONTFAMILY.poppins_semibold,
