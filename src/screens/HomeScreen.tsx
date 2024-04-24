@@ -174,7 +174,7 @@ const HomeScreen = ({ navigation }: any) => {
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
                 {/*Header */}
                 <View style={styles.header} >
-                    <HeaderBar title='COFFEE SHOP'/>
+                    <HeaderBar title='Coffee Shop'/>
 
                     <View style={{ marginHorizontal: SPACING.space_30 }}>
                         <View style={styles.bannerContainer}>
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     },
     header: {
         backgroundColor: COLORS.primaryBlackHex,
-        height: 352
+        height: 362
     },
     footer: {
         marginTop: 50,

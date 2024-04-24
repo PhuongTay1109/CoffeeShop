@@ -30,7 +30,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ title }) => {
                 <TouchableOpacity onPress={() => setShowLogout(!showLogout)}>
                     <View style={styles.UsernameTextContainer}>
                         <Text style={styles.UsernameText}>{username}</Text>
-                        <Icon name="caret-down" size={14} color="#fff" />
+                        <Icon name="caret-down" size={14} color={COLORS.primaryOrangeHex} />
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleLogout}>
@@ -47,25 +47,26 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        backgroundColor: COLORS.primaryBlackHex
     },
     HeaderText: {
         fontFamily: FONTFAMILY.poppins_semibold,
         fontSize: 26,
-        color: COLORS.primaryWhiteHex,
+        color: COLORS.primaryOrangeHex,
     },
     UsernameContainer: {
         flexDirection: 'column',
         alignItems: 'flex-end',
-        marginTop: 20
     },
     UsernameTextContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: 30,
     },
     UsernameText: {
         fontFamily: FONTFAMILY.poppins_medium,
         fontSize: 14,
-        color: COLORS.primaryWhiteHex,
+        color: COLORS.primaryOrangeHex,
         marginRight: 5,
     },
     LogoutText: {

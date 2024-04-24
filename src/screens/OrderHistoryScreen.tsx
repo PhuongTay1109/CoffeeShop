@@ -23,25 +23,25 @@ const OrderHistoryScreen = () => {
     const tabBarHeight = useBottomTabBarHeight();
     return (
         <View style={styles.ScreenContainer}>
-        <StatusBar backgroundColor={COLORS.primaryBlackHex} />
+            <StatusBar backgroundColor={COLORS.primaryBlackHex} />
 
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.ScrollViewFlex}>
-        <View
-            style={[styles.ScrollViewInnerView, {marginBottom: tabBarHeight}]}>
-            <View style={styles.ItemContainer}>
-            <HeaderBar title="Order History" />
-                <View style={styles.ListItemContainer}>
-                    <OrderHistoryCard />
+            <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.ScrollViewFlex}>
+                <View
+                    style={[styles.ScrollViewInnerView, {marginBottom: tabBarHeight}]}>
+                    <View style={styles.ItemContainer}>
+                    <HeaderBar title="Order History" />
+                        <View style={styles.ListItemContainer}>
+                            <OrderHistoryCard />
+                        </View>
+                    </View>
+                    <TouchableOpacity>
+                        <Text style={styles.ButtonText}>Download</Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
-            <TouchableOpacity>
-                <Text style={styles.ButtonText}>Download</Text>
-            </TouchableOpacity>
+            </ScrollView>
         </View>
-        </ScrollView>
-    </View>
     );
 }
 
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     ListItemContainer: {
+        marginTop: 20,
         paddingHorizontal: SPACING.space_20,
         gap: SPACING.space_30,
     },
