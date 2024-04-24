@@ -63,11 +63,7 @@ const HomeScreen = ({ navigation }: any) => {
 
     // Khi fetch data, ban đầu CoffeeList sẽ null
     // Sau khi data đã được lấy về, sẽ render lại
-
-    // const CoffeeList = CoffeeData;
-
     const CoffeeList = useCoffeeData(); 
-    console.log(CoffeeList);
 
     const addToCart = useStore((state: any) => state.addToCart);
     const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
@@ -96,9 +92,6 @@ const HomeScreen = ({ navigation }: any) => {
             setSortedCoffee(getCoffeeList(categoryIndex.category, CoffeeList));
         }
     }, [CoffeeList, categoryIndex.category]);   
-
-    console.log("CATEGORIES: " + categories);
-    console.log("SORTED COFFEE: " + sortedCoffee);
 
     const ListRef: any = useRef<FlatList>();
     const tabBarHeight = useBottomTabBarHeight();
@@ -281,18 +274,25 @@ const HomeScreen = ({ navigation }: any) => {
                                 <TouchableOpacity
                                     activeOpacity={1.0}
                                     onPress={() => {
+                                        console.log(JSON.stringify(item))
                                         navigation.push('Details', {
                                             index: item.index,
                                             id: item.id,
                                             type: item.type,
-                                        });
+                                            roasted: item.roasted,
+                                            imagelink_portrait: item.imagelink_portrait,
+                                            name: item.name,                                           
+                                            average_rating: item.average_rating,
+                                            price: item.prices,
+                                            description: item.description,
+                                            favourite: item.favourite
+                                            });
                                     }}>
                                     <CoffeeCard
                                         id={item.id}
                                         index={item.index}
                                         type={item.type}
-                                        roasted={item.roasted}                                        
-                                        //imagelink_square={{ uri: item.imagelink_square}}
+                                        roasted={item.roasted} 
                                         imagelink_square={item.imagelink_square}
                                         name={item.name}
                                         special_ingredient={item.special_ingredient}
@@ -302,7 +302,6 @@ const HomeScreen = ({ navigation }: any) => {
                                     />
                                 </TouchableOpacity>
                             );
-                            console.log(CoffeeCard);
                         }}
                     />
                 </View>

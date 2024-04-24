@@ -33,18 +33,23 @@ const useCoffeeData = (): Coffee[] | null => {
     const fetchCoffeeData = async () => {
       try {
         const currentUser = auth().currentUser;
-        const userEmail = currentUser.email;
-        const userDocRef = db.collection('users').doc(userEmail);
-        const doc = await userDocRef.get();
-        if (doc.exists) {
-          const userData = doc.data();
-          if (userData && userData.ProductsList) {
-            const data: Coffee[] = userData.ProductsList;
-            setCoffeeData(data);
+        if (currentUser != null) {
+          const userEmail = currentUser.email;
+          if (userEmail != null) {
+            const userDocRef = db.collection('users').doc(userEmail);
+            const doc = await userDocRef.get();
+            if (doc.exists) {
+              const userData = doc.data();
+              if (userData && userData.ProductsList) {
+                const data: Coffee[] = userData.ProductsList;
+                setCoffeeData(data);
+              }
+            } else {
+              console.log('No such document!');
+            }
           }
-        } else {
-          console.log('No such document!');
         }
+
       } catch (error) {
         console.error('Error fetching coffee data:', error);
         setCoffeeData(null);

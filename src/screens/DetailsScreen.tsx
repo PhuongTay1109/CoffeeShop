@@ -1,3 +1,5 @@
+/*eslint-disable */
+
 import React, {useState} from 'react';
 import {
   ScrollView,
@@ -19,7 +21,18 @@ import {
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
 import PaymentFooter from '../components/PaymentFooter';
 
-const DetailsScreen = () => {
+const DetailsScreen = (props: any) => {
+  // Sử dụng props.navigation.getParam() để truy cập các thuộc tính
+  const index = props.route.params.index;
+  const id = props.route.params.id;
+  const type = props.route.params.type;
+  const roasted = props.route.params.roasted;
+  const imagelink_portrait = props.route.params.imagelink_portrait;
+  const name = props.route.params.name;
+  const average_rating = props.route.params.average_rating;
+  const price = props.route.params.price;
+  const description = props.route.params.description;
+  const favourite = props.route.params.favourite;
 
   return (
     <View style={styles.ScreenContainer}>
@@ -27,29 +40,37 @@ const DetailsScreen = () => {
         <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.ScrollViewFlex}>
-            <ImageBackgroundInfo />
+            <ImageBackgroundInfo 
+              average_rating={average_rating}
+              name={name}
+              roasted={roasted}
+              favourite={favourite}
+              imagelink_portrait={imagelink_portrait}
+              id={id}
+              index={index}
+            />
 
             <View style={styles.FooterInfoArea}>
             <Text style={styles.InfoTitle}>Description</Text>
             <TouchableWithoutFeedback >
                 <Text style={styles.DescriptionText}>
-                    Mô tả....
+                    {description}
                 </Text>
             </TouchableWithoutFeedback>
             <Text style={styles.InfoTitle}>Size</Text>
             <View style={styles.SizeOuterContainer}>
                 <TouchableOpacity style={styles.SizeBox}>
-                    <Text>
+                    <Text  style={styles.SizeText}>
                         S
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.SizeBox}>
-                    <Text>
+                    <Text  style={styles.SizeText}>
                         M
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.SizeBox}>
-                    <Text>
+                    <Text  style={styles.SizeText}>
                         L
                     </Text>
                 </TouchableOpacity>
@@ -99,10 +120,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: SPACING.space_24 * 2,
     borderRadius: BORDERRADIUS.radius_10,
-    borderWidth: 2,
+    borderWidth: 2
   },
   SizeText: {
     fontFamily: FONTFAMILY.poppins_medium,
+    color: COLORS.primaryWhiteHex
   },
 });
 

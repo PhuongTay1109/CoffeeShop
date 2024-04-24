@@ -87,7 +87,6 @@ const SignupScreen = () => {
             await userDocRef.set({
                 ProductsList: CoffeeData ,
                 CartList: [],
-                FavoritesList: [],
                 OrderList: []
             });
 
