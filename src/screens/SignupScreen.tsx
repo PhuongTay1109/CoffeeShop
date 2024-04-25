@@ -77,15 +77,23 @@ const SignupScreen = () => {
                 formState.inputValues.email,
                 formState.inputValues.password
             );
-            await auth().currentUser.updateProfile({
-                displayName: formState.inputValues.username
+
+            const user = auth().currentUser;
+            
+            if (user) {
+                await user.updateProfile({
+                    displayName: formState.inputValues.username
+                });
+            }
+            
+            const preparedData = CoffeeData.map((item, index) => {
+                return { ...item, index };
             });
 
-            // Thêm document mới cho người dùng trong Firestore
             const userEmail = formState.inputValues.email;
-            const userDocRef = getFirestore().collection('users').doc(userEmail); // Sử dụng email làm id cho document
+            const userDocRef = getFirestore().collection('users').doc(userEmail);
             await userDocRef.set({
-                ProductsList: CoffeeData ,
+                ProductsList: preparedData,
                 CartList: [],
                 OrderList: []
             });
@@ -216,7 +224,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: '50%',
         right: 50,
-        transform: [{ translateY: -20}]
+        transform: [{ translateY: -20 }]
     },
 });
 

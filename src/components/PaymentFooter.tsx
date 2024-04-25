@@ -1,3 +1,4 @@
+/*eslint-disable */
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {
@@ -9,21 +10,21 @@ import {
 } from '../theme/theme';
 
 
-const PaymentFooter = () => {
+const PaymentFooter = ({ price }: { price: string }) => {
     return (
-        <View style={styles.PriceFooter}>
-            <View style={styles.PriceContainer}>
-                <Text style={styles.PriceTitle}>Price</Text>
-                <Text style={styles.PriceText}>
-                $ <Text style={styles.Price}>4.20</Text>
-                </Text>
-            </View>
-            <TouchableOpacity style={styles.PayButton}>
-                <Text style={styles.ButtonText}>Pay</Text>
-            </TouchableOpacity>
+      <View style={styles.PriceFooter}>
+        <View style={styles.PriceContainer}>
+          <Text style={styles.PriceTitle}>Price</Text>
+          <Text style={styles.PriceText}>
+            $ <Text style={styles.Price}>{price}</Text> 
+          </Text>
         </View>
+        <TouchableOpacity style={styles.PayButton}>
+          <Text style={styles.ButtonText}>Pay</Text>
+        </TouchableOpacity>
+      </View>
     );
-};
+  };
 
 const styles = StyleSheet.create({
     PriceFooter: {

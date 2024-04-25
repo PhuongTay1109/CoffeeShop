@@ -1,6 +1,6 @@
 /*eslint-disable*/
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -22,22 +22,6 @@ import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
 
-// interface ImageBackgroundInfoProps {
-//   EnableBackHandler: boolean;
-//   imagelink_portrait: ImageProps;
-//   type: string;
-//   id: string;
-//   favourite: boolean;
-//   name: string;
-//   special_ingredient: string;
-//   ingredients: string;
-//   average_rating: number;
-//   ratings_count: string;
-//   roasted: string;
-//   BackHandler?: any;
-//   ToggleFavourite: any;
-// }
-
 const ImageBackgroundInfo = (props: any) => {
   const { average_rating, name, roasted, imagelink_portrait } = props;
 
@@ -47,72 +31,45 @@ const ImageBackgroundInfo = (props: any) => {
   // Handle left press
   const goBackToHomePage = () => {
     navigation.navigate('Tab');
+    props.reloadData();
   };
 
   const db = getFirestore();
   const [favourite, setFavourite] = useState(props.favourite);
   const toggleFavourite = async () => {
     setFavourite(!favourite);
-  }
-    // try {
-    //   const currentUser = auth().currentUser;
-    //   if (currentUser != null) {
-    //     const userEmail = currentUser.email;
-    //     if (userEmail != null) {
-    //       // lấy refernce tới user
-    //       const userDocRef = db.collection('users').doc(userEmail);
+    
+    try {
+        const currentUser = auth().currentUser;
+        if (currentUser != null) {
+            const userEmail = currentUser.email;
+            if (userEmail != null) {
+                const userDocRef = db.collection('users').doc(userEmail);
+                const snapshot = await userDocRef.get();
+                const userData = snapshot.data();
+                if (userData) {
+                    const productsList = userData.ProductsList;
 
-    //       // lấy data của user
-    //       const snapshot = await userDocRef.get();
-    //       const userData = snapshot.data();
+                    let updatedProduct = productsList[props.index];
+                    const favouriteProp = updatedProduct.favourite;
+                    updatedProduct.favourite = !favouriteProp;
 
-    //       // in ra giá trị favorite tại index đó
-    //       console.log(`Giá trị của ProductsList[${props.index}].favourite:`, userData.ProductsList[props.index].favourite);
+                    const updatedProductsList = [...productsList];
 
-    //       // từ user lấy reference tới product list
-    //       const productsListRef = userDocRef.collection('ProductsList');
-    //       const productRef = productsListRef.doc(props.index.toString());
-    //       // in ra giá trị favorite tại index đó
-    //       console.log((await productRef.get()).data());
+                    console.log(updatedProduct);
 
-          // await productRef.update({
-          //   favourite: favourite
-          // });
+                    await userDocRef.update({
+                      [`ProductsList`]: updatedProductsList
+                    });
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error toggling favourite:', error);
+    }
+};
 
-          
-
-    //       const userDocRef = db.collection('users').doc(userEmail);
-    //       const snapshot = await userDocRef.get();
-    //       const userData = snapshot.data();
-    //       if (userData && userData.ProductsList) {
-    //           if (userData.ProductsList.length > props.index) {
-    //               const product = userData.ProductsList[props.index];
-    //               if (product) {
-    //                   const newFavoriteStatus = !product.favourite;
-
-    //                   await userDocRef.update({
-    //                       [`ProductsList.${props.index}.favourite`]: newFavoriteStatus
-    //                   });
-
-    //                   console.log(`Favorite status of product ${product.name} updated to ${newFavoriteStatus}`);
-    //               } else {
-    //                   console.log("No product exists at index", props.index, "in ProductsList array.");
-    //               }
-    //           } else {
-    //               console.log("No product exists at index", props.index, "in ProductsList array.");
-    //           }
-    //       } else {
-    //           console.log("ProductsList array does not exist in user data.");
-    //       }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error toggling favourite:', error);
-  //   }
-  // };
-
-
-  console.log(favourite);
+console.log(favourite);
 
   return (
     <View>
