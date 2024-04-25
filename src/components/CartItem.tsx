@@ -1,4 +1,5 @@
-import React from 'react';
+/*eslint-disable */
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -18,7 +19,25 @@ import {
 import CustomIcon from './CustomIcon';
 
 
-const CartItem = () => {
+const CartItem = (props: any) => {
+    const { id, imagelink_square, index, name, price, roasted, special_ingredient, quantity, size } = props;
+    const [itemQuantity, setItemQuantity] = useState(quantity); // State lưu số lượng sản phẩm
+    const [itemPrice, setItemPrice] = useState(price*quantity);
+
+    // Hàm tăng số lượng sản phẩm
+    const increaseQuantity = () => {
+        setItemQuantity(itemQuantity + 1);
+        setItemPrice(price * (itemQuantity + 1));
+    };
+
+    // Hàm giảm số lượng sản phẩm, không được giảm xuống dưới 1
+    const decreaseQuantity = () => {
+        if (itemQuantity > 1) {
+            setItemQuantity(itemQuantity - 1);
+            setItemPrice(price * (itemQuantity - 1));
+        }
+    };
+
     return (
         <View>
             <View>
@@ -28,16 +47,16 @@ const CartItem = () => {
                 colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
                 style={styles.CartItemLinearGradient}>
                 <View style={styles.CartItemRow}>
-                    <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.jpg")} style={styles.CartItemImage} />
+                    <Image source={imagelink_square} style={styles.CartItemImage} />
                     <View style={styles.CartItemInfo}>
                     <View>
-                        <Text style={styles.CartItemTitle}>Americano</Text>
+                        <Text style={styles.CartItemTitle}>{name}</Text>
                         <Text style={styles.CartItemSubtitle}>
-                        With Steamed Milk
+                            {special_ingredient}
                         </Text>
                     </View>
                     <View style={styles.CartItemRoastedContainer}>
-                        <Text style={styles.CartItemRoastedText}>Medium Roasted</Text>
+                        <Text style={styles.CartItemRoastedText}>{roasted}</Text>
                     </View>
                     </View>
                 </View>
@@ -45,30 +64,30 @@ const CartItem = () => {
                     <View style={styles.CartItemSizeValueContainer}>
                         <View style={styles.SizeBox}>
                             <Text style={[styles.SizeText,{ fontSize: FONTSIZE.size_16,},]}>
-                                S
+                                {size}
                             </Text>
                         </View>
                         <Text style={styles.SizeCurrency}>
                         $
                         <Text style={styles.SizePrice}>
-                        4.20
+                            {itemPrice}
                         </Text>
                         </Text>
                     </View>
                     <View style={styles.CartItemSizeValueContainer}>
-                        <TouchableOpacity style={styles.CartItemIcon}>
-                        <CustomIcon
-                            name="minus"
-                            color={COLORS.primaryWhiteHex}
-                            size={FONTSIZE.size_10}
-                        />
+                        <TouchableOpacity style={styles.CartItemIcon} onPress={decreaseQuantity}>
+                            <CustomIcon
+                                name="minus"
+                                color={COLORS.primaryWhiteHex}
+                                size={FONTSIZE.size_10}
+                            />
                         </TouchableOpacity>
                         <View style={styles.CartItemQuantityContainer}>
                             <Text style={styles.CartItemQuantityText}>
-                                1
+                                {itemQuantity}
                             </Text>
                         </View>
-                        <TouchableOpacity style={styles.CartItemIcon}>
+                        <TouchableOpacity style={styles.CartItemIcon} onPress={increaseQuantity}>
                             <CustomIcon
                                 name="add"
                                 color={COLORS.primaryWhiteHex}
@@ -79,68 +98,8 @@ const CartItem = () => {
                     </View>
 
                 </LinearGradient>
-            </View>
-            <View>
-            <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
-            style={styles.CartItemLinearGradient}>
-            <View style={styles.CartItemRow}>
-                <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.jpg")} style={styles.CartItemImage} />
-                <View style={styles.CartItemInfo}>
-                <View>
-                    <Text style={styles.CartItemTitle}>Americano</Text>
-                    <Text style={styles.CartItemSubtitle}>
-                    With Steamed Milk
-                    </Text>
-                </View>
-                <View style={styles.CartItemRoastedContainer}>
-                    <Text style={styles.CartItemRoastedText}>Medium Roasted</Text>
-                </View>
-                </View>
-            </View>
-                <View style={styles.CartItemSizeRowContainer}>
-                <View style={styles.CartItemSizeValueContainer}>
-                    <View style={styles.SizeBox}>
-                    <Text style={[styles.SizeText,{ fontSize: FONTSIZE.size_16,},]}>
-                        S
-                    </Text>
-                    </View>
-                    <Text style={styles.SizeCurrency}>
-                    $
-                    <Text style={styles.SizePrice}>
-                    4.20
-                    </Text>
-                    </Text>
-                </View>
-                <View style={styles.CartItemSizeValueContainer}>
-                    <TouchableOpacity style={styles.CartItemIcon}>
-                    <CustomIcon
-                        name="minus"
-                        color={COLORS.primaryWhiteHex}
-                        size={FONTSIZE.size_10}
-                    />
-                    </TouchableOpacity>
-                    <View style={styles.CartItemQuantityContainer}>
-                    <Text style={styles.CartItemQuantityText}>
-                        1
-                    </Text>
-                    </View>
-                    <TouchableOpacity style={styles.CartItemIcon}>
-                    <CustomIcon
-                        name="add"
-                        color={COLORS.primaryWhiteHex}
-                        size={FONTSIZE.size_10}
-                    />
-                    </TouchableOpacity>
-                </View>
-                </View>
-
-            </LinearGradient>
-            </View>
+            </View>    
         </View>
-        
     );
 };
 

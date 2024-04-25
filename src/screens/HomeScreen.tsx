@@ -340,7 +340,8 @@ const HomeScreen = ({ navigation }: any) => {
                                             price: item.prices,
                                             description: item.description,
                                             favourite: item.favourite,
-                                            reloadData: reloadData
+                                            reloadData: reloadData,
+                                            imagelink_square: item.imagelink_square
                                         });
                                     }}>
                                     <CoffeeCard
@@ -487,9 +488,9 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         marginTop: SPACING.space_10,
-        fontFamily: FONTFAMILY.poppins_regular, // Thay thế bằng font family của bạn
-        fontSize: FONTSIZE.size_16, // Thay thế bằng kích thước phù hợp
-        color: COLORS.primaryDarkGreyHex, // Thay thế bằng màu sắc phù hợp
+        fontFamily: FONTFAMILY.poppins_regular, 
+        fontSize: FONTSIZE.size_16, 
+        color: COLORS.primaryDarkGreyHex,
     }
 })
 

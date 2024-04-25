@@ -10,21 +10,21 @@ import {
 } from '../theme/theme';
 
 
-const PaymentFooter = ({ price }: { price: string }) => {
-    return (
-      <View style={styles.PriceFooter}>
-        <View style={styles.PriceContainer}>
-          <Text style={styles.PriceTitle}>Price</Text>
-          <Text style={styles.PriceText}>
-            $ <Text style={styles.Price}>{price}</Text> 
-          </Text>
-        </View>
-        <TouchableOpacity style={styles.PayButton}>
-          <Text style={styles.ButtonText}>Pay</Text>
-        </TouchableOpacity>
+const PaymentFooter = ({ price, text, onPress }: { price: string, text: string, onPress: () => void }) => {
+  return (
+    <View style={styles.PriceFooter}>
+      <View style={styles.PriceContainer}>
+        <Text style={styles.PriceTitle}>Price</Text>
+        <Text style={styles.PriceText}>
+          $ <Text style={styles.Price}>{price}</Text> 
+        </Text>
       </View>
-    );
-  };
+      <TouchableOpacity style={styles.PayButton} onPress={onPress}>
+        <Text style={styles.ButtonText}>{text}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
     PriceFooter: {

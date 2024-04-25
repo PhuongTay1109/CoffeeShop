@@ -9,6 +9,7 @@ import {
   View,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { useStore } from '../store/store';
 import {
@@ -20,15 +21,50 @@ import {
 } from '../theme/theme';
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
 import PaymentFooter from '../components/PaymentFooter';
+import auth from '@react-native-firebase/auth';
+import firebase from "@react-native-firebase/app"
+import getFirestore from "@react-native-firebase/firestore";
 
 const DetailsScreen = (props: any) => {
-  const { index, id, roasted, imagelink_portrait, name, average_rating, price, description, favourite, reloadData } = props.route.params;
+  const { index, id, roasted, imagelink_portrait, name, average_rating, price, description, favourite, reloadData, imagelink_square } = props.route.params;
 
   // State to hold the selected size
-  const [selectedSize, setSelectedSize] = useState<string>(''); 
+  const [selectedSize, setSelectedSize] = useState<string>('');
 
   // Find the price of the selected size
-  const selectedPrice = price.find((sizePrice: any) => sizePrice.size === selectedSize)?.price || '0.00'; 
+  const selectedPrice = price.find((sizePrice: any) => sizePrice.size === selectedSize)?.price || '0.00';
+
+  // Function to handle adding item to cart
+  const db = getFirestore();
+  const addToCart = async () => {
+    try {
+      const currentUser = auth().currentUser;
+      if (currentUser != null) {
+        const userEmail = currentUser.email;
+        if (userEmail != null) {
+          const userDocRef = db.collection('users').doc(userEmail);
+          const selectedItem = {
+            id,
+            index,
+            name,
+            size: selectedSize,
+            price: selectedPrice,
+            quantity: 1, 
+            imagelink_square: imagelink_square,
+            roasted: roasted
+          };
+
+          await userDocRef.update({
+            CartList: firebase.firestore.FieldValue.arrayUnion(selectedItem)
+          });
+
+          Alert.alert('Item added to cart successfully!');
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling favourite:', error);
+    }
+  };
 
   return (
     <View style={styles.ScreenContainer}>
@@ -65,7 +101,7 @@ const DetailsScreen = (props: any) => {
             ))}
           </View>
         </View>
-        <PaymentFooter price={selectedPrice} />
+        <PaymentFooter price={selectedPrice} text="ADD TO CART" onPress={addToCart} />
       </ScrollView>
     </View>
   );
