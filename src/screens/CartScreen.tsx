@@ -34,7 +34,7 @@ const CartScreen = () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <PaymentFooter />
+                    <PaymentFooter price='0.00' />
                 </View>
             </ScrollView>
         </View>

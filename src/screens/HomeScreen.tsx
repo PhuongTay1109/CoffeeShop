@@ -26,7 +26,8 @@ import CoffeeCard from '../components/CoffeeCard';
 import { useStore } from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import CustomIcon from '../components/CustomIcon';
-import useCoffeeData from '../data/UseCoffeeData';
+import auth from '@react-native-firebase/auth';
+import getFirestore from "@react-native-firebase/firestore";
 
 const getCategoriesFromData = (data: any) => {
     if (!data || data.length === 0) {
@@ -42,7 +43,6 @@ const getCategoriesFromData = (data: any) => {
     }
     let categories = Object.keys(temp);
     categories.unshift('All');
-    console.log(categories);
     return categories;
 };
 
@@ -59,11 +59,65 @@ const getCoffeeList = (category: string, data: any) => {
     }
 };
 
+interface Price {
+    size: string;
+    price: number;
+    currency: string;
+}
+
+interface Coffee {
+    average_rating: number;
+    description: string;
+    favourite: boolean;
+    id: string;
+    imagelink_portrait: string;
+    imagelink_square: string;
+    index: number;
+    name: string;
+    prices: Price[];
+    roasted: string;
+    special_ingredient: string;
+    type: string;
+}
+
 const HomeScreen = ({ navigation }: any) => {
 
-    // Khi fetch data, ban đầu CoffeeList sẽ null
-    // Sau khi data đã được lấy về, sẽ render lại
-    const CoffeeList = useCoffeeData(); 
+   const db = getFirestore();
+   const [CoffeeList, setCoffeeList] = useState<Coffee[] | null>(null);
+
+    const fetchCoffeeData = async () => {
+        try {
+            const currentUser = auth().currentUser;
+            if (currentUser != null) {
+                const userEmail = currentUser.email;
+                if (userEmail != null) {
+                    const userDocRef = db.collection('users').doc(userEmail);
+                    const doc = await userDocRef.get();
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        if (userData && userData.ProductsList) {
+                            const data: Coffee[] = userData.ProductsList;
+                            setCoffeeList(data);
+                        }
+                    } else {
+                        console.log('No such document!');
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching coffee data:', error);
+            setCoffeeList(null);
+        }
+    };
+
+    useEffect(() => {
+        fetchCoffeeData();
+    }, []);
+
+    const reloadData = () => {       
+        fetchCoffeeData();
+        setCategoryIndex({ index: 0, category: 'All' }); // Reset category index
+    };
 
     const addToCart = useStore((state: any) => state.addToCart);
     const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
@@ -72,12 +126,12 @@ const HomeScreen = ({ navigation }: any) => {
     const [searchText, setSearchText] = useState('');
     const [categoryIndex, setCategoryIndex] = useState({
         index: 0,
-        category: 'All', 
+        category: 'All',
     });
 
     const [sortedCoffee, setSortedCoffee] = useState(
         CoffeeList ? getCoffeeList(categoryIndex.category, CoffeeList) : []
-    );    
+    );
 
     useEffect(() => {
         if (CoffeeList) {
@@ -91,7 +145,7 @@ const HomeScreen = ({ navigation }: any) => {
         if (CoffeeList) {
             setSortedCoffee(getCoffeeList(categoryIndex.category, CoffeeList));
         }
-    }, [CoffeeList, categoryIndex.category]);   
+    }, [CoffeeList, categoryIndex.category]);
 
     const ListRef: any = useRef<FlatList>();
     const tabBarHeight = useBottomTabBarHeight();
@@ -110,7 +164,7 @@ const HomeScreen = ({ navigation }: any) => {
             ]);
         }
     };
-    
+
 
     const resetSearchCoffee = () => {
         if (CoffeeList) {
@@ -123,7 +177,7 @@ const HomeScreen = ({ navigation }: any) => {
             setSearchText('');
         }
     };
-    
+
     const CoffeCardAddToCart = ({
         id,
         index,
@@ -151,7 +205,7 @@ const HomeScreen = ({ navigation }: any) => {
             ToastAndroid.CENTER,
         );
     };
-    
+
     if (!CoffeeList) {
         return (
             <View style={styles.loadingContainer}>
@@ -167,7 +221,7 @@ const HomeScreen = ({ navigation }: any) => {
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
                 {/*Header */}
                 <View style={styles.header} >
-                    <HeaderBar title='Coffee Shop'/>
+                    <HeaderBar title='Coffee Shop' />
 
                     <View style={{ marginHorizontal: SPACING.space_30 }}>
                         <View style={styles.bannerContainer}>
@@ -249,7 +303,7 @@ const HomeScreen = ({ navigation }: any) => {
                                     >
                                         {data}
                                     </Text>
-                                    
+
                                 </TouchableOpacity>
                             </View>
                         ))}
@@ -281,18 +335,19 @@ const HomeScreen = ({ navigation }: any) => {
                                             type: item.type,
                                             roasted: item.roasted,
                                             imagelink_portrait: item.imagelink_portrait,
-                                            name: item.name,                                           
+                                            name: item.name,
                                             average_rating: item.average_rating,
                                             price: item.prices,
                                             description: item.description,
-                                            favourite: item.favourite
-                                            });
+                                            favourite: item.favourite,
+                                            reloadData: reloadData
+                                        });
                                     }}>
                                     <CoffeeCard
                                         id={item.id}
                                         index={item.index}
                                         type={item.type}
-                                        roasted={item.roasted} 
+                                        roasted={item.roasted}
                                         imagelink_square={item.imagelink_square}
                                         name={item.name}
                                         special_ingredient={item.special_ingredient}
