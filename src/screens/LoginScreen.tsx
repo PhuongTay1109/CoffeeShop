@@ -2,7 +2,7 @@
 
 import React, { useCallback, useReducer, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { COLORS, FONTFAMILY, FONTSIZE } from "../theme/theme";
 import Input from "../components/Input";
@@ -26,7 +26,7 @@ const initialState = {
 }
 
 const LoginScreen = () => {
-    const navigation = useNavigation();
+    const navigation: NavigationProp<any> = useNavigation();
 
     const [isLoading, setIsLoading] = useState(false);
     const [formState, setFormState] = useReducer(reducer, initialState);

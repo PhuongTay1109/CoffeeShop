@@ -328,7 +328,6 @@ const HomeScreen = ({ navigation }: any) => {
                                 <TouchableOpacity
                                     activeOpacity={1.0}
                                     onPress={() => {
-                                        console.log(JSON.stringify(item))
                                         navigation.push('Details', {
                                             index: item.index,
                                             id: item.id,

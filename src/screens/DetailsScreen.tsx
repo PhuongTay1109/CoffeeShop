@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useStore } from '../store/store';
 import {
   BORDERRADIUS,
   COLORS,
@@ -22,8 +21,8 @@ import {
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
 import PaymentFooter from '../components/PaymentFooter';
 import auth from '@react-native-firebase/auth';
-import firebase from "@react-native-firebase/app"
 import getFirestore from "@react-native-firebase/firestore";
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 const DetailsScreen = (props: any) => {
   const { index, id, roasted, imagelink_portrait, name, average_rating, price, description, favourite, reloadData, imagelink_square } = props.route.params;
@@ -36,6 +35,8 @@ const DetailsScreen = (props: any) => {
 
   // Function to handle adding item to cart
   const db = getFirestore();
+  const navigation: NavigationProp<any> = useNavigation();
+
   const addToCart = async () => {
     try {
       const currentUser = auth().currentUser;
@@ -49,22 +50,42 @@ const DetailsScreen = (props: any) => {
             name,
             size: selectedSize,
             price: selectedPrice,
-            quantity: 1, 
-            imagelink_square: imagelink_square,
-            roasted: roasted
+            quantity: 1,
+            imagelink_square,
+            roasted
           };
+  
+          const snapshot = await userDocRef.get();
+          const userData = snapshot.data();
+          if (userData) {
+            let cartList = userData.CartList || [];
+  
+            // Tìm kiếm sản phẩm trong giỏ hàng
+            const foundIndex = cartList.findIndex((item: any) => item.id === id && item.size === selectedSize);
+  
+            if (foundIndex !== -1) {
+              // Nếu sản phẩm đã tồn tại, cập nhật số lượng
+              cartList[foundIndex].quantity += 1;
+              
+            } else {
+              // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
+              cartList.push(selectedItem);      
+            }  
 
-          await userDocRef.update({
-            CartList: firebase.firestore.FieldValue.arrayUnion(selectedItem)
-          });
+            // Cập nhật lại danh sách giỏ hàng vào Firebase
+            await userDocRef.update({
+              CartList: cartList
+            });
 
-          Alert.alert('Item added to cart successfully!');
+            Alert.alert('Item added to cart successfully!');              
+          }
         }
       }
     } catch (error) {
-      console.error('Error toggling favourite:', error);
+      console.error('Error adding item to cart:', error);
     }
   };
+  
 
   return (
     <View style={styles.ScreenContainer}>

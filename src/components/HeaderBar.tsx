@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import { COLORS, FONTFAMILY, SPACING } from '../theme/theme';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 interface HeaderBarProps {
     title?: string;
 }
 
 const HeaderBar: React.FC<HeaderBarProps> = ({ title }) => {
-    const navigation = useNavigation();
+    const navigation: NavigationProp<any> = useNavigation();
     const [showLogout, setShowLogout] = useState(false);
 
     const user = auth().currentUser;
