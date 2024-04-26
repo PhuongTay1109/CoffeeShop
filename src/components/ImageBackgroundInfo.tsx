@@ -18,7 +18,7 @@ import {
   SPACING,
 } from '../theme/theme';
 import CustomIcon from './CustomIcon';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
 
@@ -26,7 +26,7 @@ const ImageBackgroundInfo = (props: any) => {
   const { average_rating, name, roasted, imagelink_portrait } = props;
 
 
-  const navigation = useNavigation();
+  const navigation: NavigationProp<any> = useNavigation();
 
   // Handle left press
   const goBackToHomePage = () => {
@@ -56,8 +56,6 @@ const ImageBackgroundInfo = (props: any) => {
 
                     const updatedProductsList = [...productsList];
 
-                    console.log(updatedProduct);
-
                     await userDocRef.update({
                       [`ProductsList`]: updatedProductsList
                     });
@@ -68,8 +66,6 @@ const ImageBackgroundInfo = (props: any) => {
         console.error('Error toggling favourite:', error);
     }
 };
-
-console.log(favourite);
 
   return (
     <View>

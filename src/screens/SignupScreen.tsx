@@ -19,7 +19,7 @@ import React, { useCallback, useReducer, useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { COLORS, FONTFAMILY, FONTSIZE } from "../theme/theme";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { reducer } from "../utils/FormReducers";
 import { validateInput } from "../utils/FormActions";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -43,7 +43,7 @@ const initialState = {
 }
 
 const SignupScreen = () => {
-    const navigation = useNavigation();
+    const navigation: NavigationProp<any> = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
     const [formState, setFormState] = useReducer(reducer, initialState);
     const [hidePassword, setHidePassword] = useState(true);
@@ -95,7 +95,7 @@ const SignupScreen = () => {
             await userDocRef.set({
                 ProductsList: preparedData,
                 CartList: [],
-                OrderList: []
+                OrderHistoryList: []
             });
 
             setIsLoading(false);
