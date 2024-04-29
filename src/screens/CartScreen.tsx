@@ -14,7 +14,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
 import PaymentFooter from '../components/PaymentFooter';
 import CartItem from '../components/CartItem';
-import EmptyListAnimation from '../components/EmpyListAnimation';
+import EmptyListAnimation from '../components/EmptyListAnimation';
 import HeaderBar from '../components/HeaderBar';
 import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
@@ -109,27 +109,35 @@ const CartScreen = ({ route }: { route: any }) => {
                     style={[styles.ScrollViewInnerView, { marginBottom: tabBarHeight }]}>
                     <View style={styles.ItemContainer}>
                         <HeaderBar title="Cart" />
-                        <View style={styles.ListItemContainer}>
-                            {cartItems.map((item) => {                                
-                                return (
-                                    <TouchableOpacity key={item.id + item.size}>
-                                        <CartItem
-                                            id={item.id}
-                                            imagelink_square={item.imagelink_square}
-                                            index={item.index}
-                                            name={item.name}
-                                            price={item.price}
-                                            quantity={item.quantity}
-                                            roasted={item.roasted}
-                                            size={item.size}
-                                            onQuantityChange={handleQuantity}
-                                        />
-                                    </TouchableOpacity>
-                                );
-                            })}
-                        </View>
+                        {cartItems.length === 0 ? (
+                            <EmptyListAnimation title={'Cart is Empty'}  />
+                        ) : (
+                            <View style={styles.ListItemContainer}>
+                                {cartItems.map((item) => {                                
+                                    return (
+                                        <TouchableOpacity key={item.id + item.size}>
+                                            <CartItem
+                                                id={item.id}
+                                                imagelink_square={item.imagelink_square}
+                                                index={item.index}
+                                                name={item.name}
+                                                price={item.price}
+                                                quantity={item.quantity}
+                                                roasted={item.roasted}
+                                                size={item.size}
+                                                onQuantityChange={handleQuantity}
+                                            />
+                                        </TouchableOpacity>
+                                    );
+                                })}
+                            </View>
+                        )}
                     </View>
-                    <PaymentFooter price={totalPrice.toFixed(2)} text="PAY" onPress={pay} />
+                    {cartItems.length != 0 ? (
+                        <PaymentFooter price={totalPrice.toFixed(2)} text="PAY" onPress={pay} />
+                        ) : (
+                            <></>
+                    )}
                 </View>
             </ScrollView>
         </View>
