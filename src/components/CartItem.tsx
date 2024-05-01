@@ -27,7 +27,7 @@ const CartItem = (props: any) => {
     useEffect(() => {
         setItemQuantity(quantity);
     }, [quantity]);
-    
+
     const [itemQuantity, setItemQuantity] = useState(quantity);
 
     const [itemPrice, setItemPrice] = useState(Number((price * quantity).toFixed(2)));
@@ -48,14 +48,8 @@ const CartItem = (props: any) => {
                     const userData = snapshot.data();
                     if (userData) {
                         let cartList = userData.CartList || [];
-
-                        // Tìm kiếm sản phẩm trong giỏ hàng
                         const foundIndex = cartList.findIndex((item: any) => item.id === id && item.size === size);
-
-                        // Cập nhật số lượng sản phẩm
                         cartList[foundIndex].quantity = newQuantity;
-
-                        // Cập nhật lại danh sách giỏ hàng vào Firebase
                         await userDocRef.update({
                             CartList: cartList
                         });
@@ -67,46 +61,40 @@ const CartItem = (props: any) => {
         }
     };
 
-    // Hàm tăng số lượng sản phẩm
     const increaseQuantity = async () => {
         await updateCartQuantity(itemQuantity + 1);
-        onQuantityChange(); 
+        onQuantityChange();
     };
 
-    // Hàm giảm số lượng sản phẩm
     const decreaseQuantity = async () => {
         if (itemQuantity > 1) {
             await updateCartQuantity(itemQuantity - 1);
-            onQuantityChange(); 
-        } 
-        /*else if (itemQuantity == 1) {
-            try {
-                const currentUser = auth().currentUser;
-                if (currentUser != null) {
-                    const userEmail = currentUser.email;
-                    if (userEmail != null) {
-                        const userDocRef = db.collection('users').doc(userEmail);
-                        const snapshot = await userDocRef.get();
-                        const userData = snapshot.data();
-                        if (userData) {
-                            let cartList = userData.CartList || [];
+            onQuantityChange();
+        }
+    };
 
-                            // Lọc ra những sản phẩm khác với sản phẩm hiện tại
-                            const updatedCartList = cartList.filter((item: any) => !(item.id === id && item.size === size));
-
-                            console.log(updatedCartList);
-
-                            // Cập nhật lại danh sách giỏ hàng vào Firebase
-                            await userDocRef.update({
-                                CartList: updatedCartList
-                            });
-                        }
+    const removeItemFromCart = async () => {
+        try {
+            const currentUser = auth().currentUser;
+            if (currentUser != null) {
+                const userEmail = currentUser.email;
+                if (userEmail != null) {
+                    const userDocRef = db.collection('users').doc(userEmail);
+                    const snapshot = await userDocRef.get();
+                    const userData = snapshot.data();
+                    if (userData) {
+                        let cartList = userData.CartList || [];
+                        const updatedCartList = cartList.filter((item: any) => !(item.id === id && item.size === size));
+                        await userDocRef.update({
+                            CartList: updatedCartList
+                        });
+                        onQuantityChange();
                     }
                 }
-            } catch (error) {
-                console.error('Error updating quantity of product:', error);
             }
-        }*/
+        } catch (error) {
+            console.error('Error removing item from cart:', error);
+        }
     };
 
 
@@ -118,6 +106,11 @@ const CartItem = (props: any) => {
                     end={{ x: 1, y: 1 }}
                     colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
                     style={styles.CartItemLinearGradient}>
+                    <View style={[styles.CartItemRow]}>
+                        <TouchableOpacity style={[styles.TrashIconContainer, styles.CartItemIcon]} onPress={removeItemFromCart}>
+                            <Text style={styles.TrashText}>X</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.CartItemRow}>
                         <Image source={imagelink_square} style={styles.CartItemImage} />
                         <View style={styles.CartItemInfo}>
@@ -190,8 +183,9 @@ const styles = StyleSheet.create({
     },
     CartItemRow: {
         flexDirection: 'row',
+        marginBottom: 40,
         gap: SPACING.space_12,
-        flex: 1,
+        flex: 1, 
     },
     CartItemImage: {
         height: 130,
@@ -307,6 +301,17 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
     },
+    TrashIconContainer: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        marginBottom: 30
+    },
+    TrashText: {
+        color: COLORS.primaryWhiteHex,
+        fontSize: 15,
+        fontWeight: 'bold'
+    }
 });
 
 export default CartItem;
