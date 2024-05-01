@@ -60,14 +60,6 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
                     source={imagelink_square}
                     style={styles.CardImageBG}
                     resizeMode="cover">
-                    <View style={styles.CardRatingContainer}>
-                        <CustomIcon
-                            name={'star'}
-                            color='yellow'
-                            size={FONTSIZE.size_16}
-                        />
-                        <Text style={styles.CardRatingText}>{average_rating}</Text>
-                    </View>
                 </ImageBackground>
                 <Text style={styles.CardTitle}>{name}</Text>
                 <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
@@ -75,19 +67,15 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
                     <Text style={styles.CardPriceCurrency}>
                         $ <Text style={styles.CardPrice}>{price.price}</Text>
                     </Text>
-                    <TouchableOpacity onPress={() => {
-                        buttonPressHandler({
-                            id,
-                            index,
-                            type,
-                            roasted,
-                            imagelink_square,
-                            name,
-                            special_ingredient,
-                            prices: [{...price, quantity: 1}],
-                            });
-                    }}>
-                    </TouchableOpacity>
+                    <View style={{display:'flex', flexDirection: "row"}}>
+                        <CustomIcon
+                            name={'star'}
+                            color='#FFCB45'
+                            size={FONTSIZE.size_16}
+                            style={{marginRight: 5}}
+                        />
+                        <Text style={styles.CardRatingText}>{average_rating}</Text>
+                    </View>
                 </View>
             </LinearGradient>
     );
@@ -126,10 +114,10 @@ const styles = StyleSheet.create({
         right: 0,
     },
     CardRatingText: {
-        fontFamily: FONTFAMILY.poppins_medium,
-        color: COLORS.primaryWhiteHex,
+        fontFamily: FONTFAMILY.poppins_semibold,
+        color: COLORS.primaryBlackHex,
         lineHeight: 22,
-        fontSize: FONTSIZE.size_14,
+        fontSize: FONTSIZE.size_18,
     },
     CardTitle: {
         fontFamily: FONTFAMILY.poppins_medium,
@@ -143,7 +131,7 @@ const styles = StyleSheet.create({
     },
     CardFooterRow: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: SPACING.space_15,
         position: 'absolute', // Đặt vị trí tuyệt đối

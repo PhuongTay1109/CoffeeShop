@@ -32,7 +32,7 @@ const FavoritesItemCard = (props: any) => {
         colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
         style={styles.ContainerLinearGradient}>
         <Text style={styles.DescriptionTitle}>Description</Text>
-        <Text style={styles.DescriptionText}>{description}</Text>
+        <Text style={styles.DescriptionText} numberOfLines={3}>{description}</Text>
       </LinearGradient>
     </View>
   );
@@ -42,6 +42,8 @@ const styles = StyleSheet.create({
   CardContainer: {
     borderRadius: BORDERRADIUS.radius_25,
     overflow: 'hidden',
+    marginTop: 20,
+    marginBottom: 20
   },
   ContainerLinearGradient: {
     gap: SPACING.space_10,
