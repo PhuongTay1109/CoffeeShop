@@ -28,6 +28,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import CustomIcon from '../components/CustomIcon';
 import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
+import { useFocusEffect } from '@react-navigation/native';
 
 const getCategoriesFromData = (data: any) => {
     if (!data || data.length === 0) {
@@ -113,6 +114,12 @@ const HomeScreen = ({ navigation }: any) => {
     useEffect(() => {
         fetchCoffeeData();
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchCoffeeData();
+        }, [])
+    );
 
     const reloadData = () => {       
         fetchCoffeeData();

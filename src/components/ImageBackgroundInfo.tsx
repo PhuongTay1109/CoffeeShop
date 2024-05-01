@@ -38,34 +38,39 @@ const ImageBackgroundInfo = (props: any) => {
   const [favourite, setFavourite] = useState(props.favourite);
   const toggleFavourite = async () => {
     setFavourite(!favourite);
-    
+
     try {
-        const currentUser = auth().currentUser;
-        if (currentUser != null) {
-            const userEmail = currentUser.email;
-            if (userEmail != null) {
-                const userDocRef = db.collection('users').doc(userEmail);
-                const snapshot = await userDocRef.get();
-                const userData = snapshot.data();
-                if (userData) {
-                    const productsList = userData.ProductsList;
+      const currentUser = auth().currentUser;
+      if (currentUser != null) {
+        const userEmail = currentUser.email;
+        if (userEmail != null) {
+          const userDocRef = db.collection('users').doc(userEmail);
+          const snapshot = await userDocRef.get();
+          const userData = snapshot.data();
+          if (userData) {
+            const productsList = userData.ProductsList;
 
-                    let updatedProduct = productsList[props.index];
-                    const favouriteProp = updatedProduct.favourite;
-                    updatedProduct.favourite = !favouriteProp;
+            let updatedProduct = productsList[props.index];
+            const favouriteProp = updatedProduct.favourite;
+            updatedProduct.favourite = !favouriteProp;
 
-                    const updatedProductsList = [...productsList];
+            const updatedProductsList = [...productsList];
 
-                    await userDocRef.update({
-                      [`ProductsList`]: updatedProductsList
-                    });
-                }
+            await userDocRef.update({
+              [`ProductsList`]: updatedProductsList
+            });
+
+            if (props.removeFavourite) {
+              console.log(props.removeFavourite);
+              props.removeFavourite();
             }
+          }
         }
+      }
     } catch (error) {
-        console.error('Error toggling favourite:', error);
+      console.error('Error toggling favourite:', error);
     }
-};
+  };
 
   return (
     <View>
@@ -73,13 +78,15 @@ const ImageBackgroundInfo = (props: any) => {
         source={imagelink_portrait}
         style={styles.ItemBackgroundImage}>
         <View style={styles.ImageHeaderBarContainerWithBack}>
-          <TouchableOpacity onPress={goBackToHomePage}>
-            <GradientBGIcon
-              name="left"
-              color={COLORS.primaryBlackHex}
-              size={FONTSIZE.size_16}
-            />
-          </TouchableOpacity>
+          {props.showLeftIcon && (
+            <TouchableOpacity onPress={goBackToHomePage}>
+              <GradientBGIcon
+                name="left"
+                color={COLORS.primaryBlackHex}
+                size={FONTSIZE.size_16}
+              />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity onPress={toggleFavourite}>
             <GradientBGIcon
               name='like'

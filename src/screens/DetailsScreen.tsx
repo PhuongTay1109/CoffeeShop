@@ -102,6 +102,7 @@ const DetailsScreen = (props: any) => {
           id={id}
           index={index}
           reloadData={reloadData}
+          showLeftIcon={true}
         />
 
         <View style={styles.FooterInfoArea}>
