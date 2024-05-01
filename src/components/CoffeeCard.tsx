@@ -73,7 +73,7 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
                 <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
                 <View style={styles.CardFooterRow}>
                     <Text style={styles.CardPriceCurrency}>
-                    $ <Text style={styles.CardPrice}>{price.price}</Text>
+                        $ <Text style={styles.CardPrice}>{price.price}</Text>
                     </Text>
                     <TouchableOpacity onPress={() => {
                         buttonPressHandler({
@@ -87,12 +87,6 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
                             prices: [{...price, quantity: 1}],
                             });
                     }}>
-                        <BGIcon
-                            color={COLORS.primaryWhiteHex}
-                            name={'add'}
-                            BGColor={COLORS.primaryOrangeHex}
-                            size={FONTSIZE.size_10}
-                        />
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
@@ -149,7 +143,7 @@ const styles = StyleSheet.create({
     },
     CardFooterRow: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         marginTop: SPACING.space_15,
         position: 'absolute', // Đặt vị trí tuyệt đối
@@ -162,6 +156,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_semibold,
         color: COLORS.primaryOrangeHex,
         fontSize: FONTSIZE.size_18,
+        alignItems: 'flex-end',
     },
     CardPrice: {
         color: COLORS.primaryBlackHex,
