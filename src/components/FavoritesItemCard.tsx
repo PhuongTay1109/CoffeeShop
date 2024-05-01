@@ -1,3 +1,4 @@
+/*eslint-disable */
 import {StyleSheet, Text, View, ImageProps} from 'react-native';
 import React from 'react';
 import ImageBackgroundInfo from './ImageBackgroundInfo';
@@ -10,32 +11,28 @@ import {
   SPACING,
 } from '../theme/theme';
 
-// interface FavoritesItemCardProps {
-//   id: string;
-//   imagelink_portrait: ImageProps;
-//   name: string;
-//   special_ingredient: string;
-//   type: string;
-//   ingredients: string;
-//   average_rating: number;
-//   ratings_count: string;
-//   roasted: string;
-//   description: string;
-//   favourite: boolean;
-//   ToggleFavouriteItem: any;
-// }
-
-const FavoritesItemCard = () => {
+const FavoritesItemCard = (props: any) => {
+  const {id, index, imagelink_portrait, name, average_rating, roasted, description, favourite} = props;
   return (
     <View style={styles.CardContainer}>
-      <ImageBackgroundInfo />
+       <ImageBackgroundInfo
+          average_rating={average_rating}
+          name={name}
+          roasted={roasted}
+          favourite={favourite}
+          imagelink_portrait={imagelink_portrait}
+          id={id}
+          index={index}
+          removeFavourite={props.removeFavourite}
+          showLeftIcon={false}
+        />
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
         colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
         style={styles.ContainerLinearGradient}>
         <Text style={styles.DescriptionTitle}>Description</Text>
-        <Text style={styles.DescriptionText}>Mô tả...</Text>
+        <Text style={styles.DescriptionText}>{description}</Text>
       </LinearGradient>
     </View>
   );
