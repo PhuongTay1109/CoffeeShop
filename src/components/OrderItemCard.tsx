@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ImageProps, Image} from 'react-native';
+import {StyleSheet, Text, View, ImageProps, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -12,50 +12,52 @@ import {
 
 const OrderItemCard = () => {
   return (
-    <LinearGradient
-      start={{x: 0, y: 0}}
-      end={{x: 1, y: 1}}
-      colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
-      style={styles.CardLinearGradient}>
-      <View style={styles.CardInfoContainer}>
-        <View style={styles.CardImageInfoContainer}>
-          <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.jpg")} style={styles.Image} />
-          <View>
-            <Text style={styles.CardTitle}>Americano</Text>
-            <Text style={styles.CardSubtitle}>With Steamed Milk</Text>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.CardCurrency}>
-            $ <Text style={styles.CardPrice}>4.20</Text>
-          </Text>
-        </View>
-      </View>
-        <View style={styles.CardTableRow}>
-          <View style={styles.CardTableRow}>
-            <View style={styles.SizeBoxLeft}>
-              <Text style={styles.SizeText}>
-                S
-              </Text>
+    <TouchableOpacity activeOpacity={1}>
+        <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
+        colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
+        style={styles.CardLinearGradient}>
+        <View style={styles.CardInfoContainer}>
+            <View style={styles.CardImageInfoContainer}>
+            <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.jpg")} style={styles.Image} />
+            <View>
+                <Text style={styles.CardTitle}>Americano</Text>
+                <Text style={styles.CardSubtitle}>With Steamed Milk</Text>
             </View>
-            <View style={styles.PriceBoxRight}>
-              <Text style={styles.PriceCurrency}>
-                $
-                <Text style={styles.Price}> 4.20</Text>
-              </Text>
             </View>
-          </View>
+            <View>
+            <Text style={styles.CardCurrency}>
+                $ <Text style={styles.CardPrice}>4.20</Text>
+            </Text>
+            </View>
+        </View>
+            <View style={styles.CardTableRow}>
+            <View style={styles.CardTableRow}>
+                <View style={styles.SizeBoxLeft}>
+                <Text style={styles.SizeText}>
+                    S
+                </Text>
+                </View>
+                <View style={styles.PriceBoxRight}>
+                <Text style={styles.PriceCurrency}>
+                    $
+                    <Text style={styles.Price}> 4.20</Text>
+                </Text>
+                </View>
+            </View>
 
-          <View style={styles.CardTableRow}>
-            <Text style={styles.CardQuantityPriceText}>
-              X <Text style={styles.Quantity}>2</Text>
-            </Text>
-            <Text style={styles.CardQuantityPriceText}>
-              8.40
-            </Text>
-          </View>
-        </View>
-    </LinearGradient>
+            <View style={styles.CardTableRow}>
+                <Text style={styles.CardQuantityPriceText}>
+                X <Text style={styles.Quantity}>2</Text>
+                </Text>
+                <Text style={styles.CardQuantityPriceText}>
+                8.40
+                </Text>
+            </View>
+            </View>
+        </LinearGradient>
+    </TouchableOpacity>
   );
 };
 

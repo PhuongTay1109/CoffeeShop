@@ -1,28 +1,38 @@
-/*eslint-disable */
-import React, { useEffect, useState } from 'react';
-import {
+    /*eslint-disable */
+    import React, {useEffect, useState} from 'react';
+    import {
     StyleSheet,
     Text,
     View,
     ImageProps,
     Image,
     TouchableOpacity,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import {
+    } from 'react-native';
+    import LinearGradient from 'react-native-linear-gradient';
+    import {
     BORDERRADIUS,
     COLORS,
     FONTFAMILY,
     FONTSIZE,
     SPACING,
-} from '../theme/theme';
-import CustomIcon from './CustomIcon';
-import auth from '@react-native-firebase/auth';
-import getFirestore from "@react-native-firebase/firestore";
+    } from '../theme/theme';
+    import CustomIcon from './CustomIcon';
+    import auth from '@react-native-firebase/auth';
+    import getFirestore from '@react-native-firebase/firestore';
+    import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-const CartItem = (props: any) => {
-    const { id, imagelink_square, name, price, roasted, special_ingredient, quantity, size, onQuantityChange } = props;
+    const CartItem = (props: any) => {
+    const {
+        id,
+        imagelink_square,
+        name,
+        price,
+        roasted,
+        special_ingredient,
+        quantity,
+        size,
+        onQuantityChange,
+    } = props;
 
     useEffect(() => {
         setItemQuantity(quantity);
@@ -30,7 +40,9 @@ const CartItem = (props: any) => {
 
     const [itemQuantity, setItemQuantity] = useState(quantity);
 
-    const [itemPrice, setItemPrice] = useState(Number((price * quantity).toFixed(2)));
+    const [itemPrice, setItemPrice] = useState(
+        Number((price * quantity).toFixed(2)),
+    );
 
     const db = getFirestore();
 
@@ -39,25 +51,27 @@ const CartItem = (props: any) => {
         setItemPrice(Number((price * newQuantity).toFixed(2)));
 
         try {
-            const currentUser = auth().currentUser;
-            if (currentUser != null) {
-                const userEmail = currentUser.email;
-                if (userEmail != null) {
-                    const userDocRef = db.collection('users').doc(userEmail);
-                    const snapshot = await userDocRef.get();
-                    const userData = snapshot.data();
-                    if (userData) {
-                        let cartList = userData.CartList || [];
-                        const foundIndex = cartList.findIndex((item: any) => item.id === id && item.size === size);
-                        cartList[foundIndex].quantity = newQuantity;
-                        await userDocRef.update({
-                            CartList: cartList
-                        });
-                    }
-                }
+        const currentUser = auth().currentUser;
+        if (currentUser != null) {
+            const userEmail = currentUser.email;
+            if (userEmail != null) {
+            const userDocRef = db.collection('users').doc(userEmail);
+            const snapshot = await userDocRef.get();
+            const userData = snapshot.data();
+            if (userData) {
+                let cartList = userData.CartList || [];
+                const foundIndex = cartList.findIndex(
+                (item: any) => item.id === id && item.size === size,
+                );
+                cartList[foundIndex].quantity = newQuantity;
+                await userDocRef.update({
+                CartList: cartList,
+                });
             }
+            }
+        }
         } catch (error) {
-            console.error('Error updating quantity of product:', error);
+        console.error('Error updating quantity of product:', error);
         }
     };
 
@@ -68,107 +82,104 @@ const CartItem = (props: any) => {
 
     const decreaseQuantity = async () => {
         if (itemQuantity > 1) {
-            await updateCartQuantity(itemQuantity - 1);
-            onQuantityChange();
+        await updateCartQuantity(itemQuantity - 1);
+        onQuantityChange();
         }
     };
 
     const removeItemFromCart = async () => {
         try {
-            const currentUser = auth().currentUser;
-            if (currentUser != null) {
-                const userEmail = currentUser.email;
-                if (userEmail != null) {
-                    const userDocRef = db.collection('users').doc(userEmail);
-                    const snapshot = await userDocRef.get();
-                    const userData = snapshot.data();
-                    if (userData) {
-                        let cartList = userData.CartList || [];
-                        const updatedCartList = cartList.filter((item: any) => !(item.id === id && item.size === size));
-                        await userDocRef.update({
-                            CartList: updatedCartList
-                        });
-                        onQuantityChange();
-                    }
-                }
+        const currentUser = auth().currentUser;
+        if (currentUser != null) {
+            const userEmail = currentUser.email;
+            if (userEmail != null) {
+            const userDocRef = db.collection('users').doc(userEmail);
+            const snapshot = await userDocRef.get();
+            const userData = snapshot.data();
+            if (userData) {
+                let cartList = userData.CartList || [];
+                const updatedCartList = cartList.filter(
+                (item: any) => !(item.id === id && item.size === size),
+                );
+                await userDocRef.update({
+                CartList: updatedCartList,
+                });
+                onQuantityChange();
             }
+            }
+        }
         } catch (error) {
-            console.error('Error removing item from cart:', error);
+        console.error('Error removing item from cart:', error);
         }
     };
 
-
     return (
-        <View>
-            <View>
-                <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
-                    style={styles.CartItemLinearGradient}>
-                    <View style={[styles.CartItemRow]}>
-                        <TouchableOpacity style={[styles.TrashIconContainer, styles.CartItemIcon]} onPress={removeItemFromCart}>
-                            <Text style={styles.TrashText}>X</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.CartItemRow}>
-                        <Image source={imagelink_square} style={styles.CartItemImage} />
-                        <View style={styles.CartItemInfo}>
-                            <View>
-                                <Text style={styles.CartItemTitle}>{name}</Text>
-                                <Text style={styles.CartItemSubtitle}>
-                                    {special_ingredient}
-                                </Text>
-                            </View>
-                            <View style={styles.CartItemRoastedContainer}>
-                                <Text style={styles.CartItemRoastedText}>{roasted}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.CartItemSizeRowContainer}>
-                        <View style={styles.CartItemSizeValueContainer}>
-                            <View style={styles.SizeBox}>
-                                <Text style={[styles.SizeText, { fontSize: FONTSIZE.size_16, },]}>
-                                    {size}
-                                </Text>
-                            </View>
-                            <Text style={styles.SizeCurrency}>
-                                $
-                                <Text style={styles.SizePrice}>
-                                    {itemPrice}
-                                </Text>
-                            </Text>
-                        </View>
-                        <View style={styles.CartItemSizeValueContainer}>
-                            <TouchableOpacity style={styles.CartItemIcon} onPress={decreaseQuantity}>
-                                <CustomIcon
-                                    name="minus"
-                                    color={COLORS.primaryWhiteHex}
-                                    size={FONTSIZE.size_10}
-                                />
-                            </TouchableOpacity>
-                            <View style={styles.CartItemQuantityContainer}>
-                                <Text style={styles.CartItemQuantityText}>
-                                    {itemQuantity}
-                                </Text>
-                            </View>
-                            <TouchableOpacity style={styles.CartItemIcon} onPress={increaseQuantity}>
-                                <CustomIcon
-                                    name="add"
-                                    color={COLORS.primaryWhiteHex}
-                                    size={FONTSIZE.size_10}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                </LinearGradient>
+        <TouchableOpacity activeOpacity={1}>
+            <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
+            style={styles.CartItemLinearGradient}>
+            <View style={styles.CartItemRow}>
+                <Image source={imagelink_square} style={styles.CartItemImage} />
+                <View style={styles.CartItemInfo}>
+                <View>
+                    <Text style={styles.CartItemTitle}>{name}</Text>
+                    <Text style={styles.CartItemSubtitle}>{special_ingredient}</Text>
+                </View>
+                <View style={styles.CartItemRoastedContainer}>
+                    <Text style={styles.CartItemRoastedText}>{roasted}</Text>
+                </View>
+                </View>
+                <View>
+                <TouchableOpacity
+                    style={[styles.TrashIconContainer, styles.CartItemIcon]}
+                    onPress={removeItemFromCart}>
+                    <Icon name="remove" size={20} color={COLORS.primaryWhiteHex} />
+                </TouchableOpacity>
+                </View>
             </View>
-        </View>
+            <View style={styles.CartItemSizeRowContainer}>
+                <View style={styles.CartItemSizeValueContainer}>
+                <View style={styles.SizeBox}>
+                    <Text style={[styles.SizeText, {fontSize: FONTSIZE.size_16}]}>
+                    {size}
+                    </Text>
+                </View>
+                <Text style={styles.SizeCurrency}>
+                    $<Text style={styles.SizePrice}>{itemPrice}</Text>
+                </Text>
+                </View>
+                <View style={styles.CartItemSizeValueContainer}>
+                <TouchableOpacity
+                    style={styles.CartItemIcon}
+                    onPress={decreaseQuantity}>
+                    <CustomIcon
+                    name="minus"
+                    color={COLORS.primaryWhiteHex}
+                    size={FONTSIZE.size_10}
+                    />
+                </TouchableOpacity>
+                <View style={styles.CartItemQuantityContainer}>
+                    <Text style={styles.CartItemQuantityText}>{itemQuantity}</Text>
+                </View>
+                <TouchableOpacity
+                    style={styles.CartItemIcon}
+                    onPress={increaseQuantity}>
+                    <CustomIcon
+                    name="add"
+                    color={COLORS.primaryWhiteHex}
+                    size={FONTSIZE.size_10}
+                    />
+                </TouchableOpacity>
+                </View>
+            </View>
+            </LinearGradient>
+        </TouchableOpacity>
     );
-};
+    };
 
-const styles = StyleSheet.create({
+    const styles = StyleSheet.create({
     CartItemLinearGradient: {
         flex: 1,
         gap: SPACING.space_12,
@@ -176,16 +187,16 @@ const styles = StyleSheet.create({
         borderRadius: BORDERRADIUS.radius_25,
         elevation: 10, // Tăng độ nâng của shadow
         shadowColor: COLORS.primaryBlackHex, // Màu shadow
-        shadowOffset: { width: 0, height: 2 }, // Offset của shadow
+        shadowOffset: {width: 0, height: 2}, // Offset của shadow
         shadowOpacity: 0.5, // Độ trong suốt của shadow
         shadowRadius: 1,
-        marginBottom: 10
+        marginBottom: 10,
     },
     CartItemRow: {
         flexDirection: 'row',
-        marginBottom: 40,
+        marginBottom: 10,
         gap: SPACING.space_12,
-        flex: 1, 
+        flex: 1,
     },
     CartItemImage: {
         height: 130,
@@ -305,13 +316,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         right: 0,
-        marginBottom: 30
+        marginBottom: 30,
     },
     TrashText: {
         color: COLORS.primaryWhiteHex,
         fontSize: 15,
-        fontWeight: 'bold'
-    }
-});
+        fontWeight: 'bold',
+    },
+    });
 
-export default CartItem;
+    export default CartItem;
