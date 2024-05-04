@@ -60,7 +60,7 @@ const FavoritesScreen = ({ navigation }: any) => {
                         const userData = doc.data();
                         if (userData && userData.ProductsList) {
                             const productsList = userData.ProductsList;
-                            const favouriteProducts = productsList.filter((product:any)=> product.favourite === true);
+                            const favouriteProducts = productsList.filter((product: any) => product.favourite === true);
                             setFavouriteList(favouriteProducts);
                         }
                     } else {
@@ -107,26 +107,29 @@ const FavoritesScreen = ({ navigation }: any) => {
                     style={[styles.ScrollViewInnerView, { marginBottom: tabBarHeight }]}>
                     <View style={styles.ItemContainer}>
                         <HeaderBar title="Favourites" />
-
-                        {favouriteList.map((coffee: Coffee) => (
-                            <View key={coffee.id} style={styles.ListItemContainer}>
-                                <TouchableOpacity>
-                                    <FavoritesItemCard
-                                        id={coffee.id}
-                                        imagelink_portrait={coffee.imagelink_portrait}
-                                        name={coffee.name}
-                                        special_ingredient={coffee.special_ingredient}
-                                        type={coffee.type}
-                                        average_rating={coffee.average_rating}
-                                        roasted={coffee.roasted}
-                                        description={coffee.description}
-                                        favourite={coffee.favourite}
-                                        index={coffee.index}
-                                        removeFavourite={fetchFavouriteList}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        ))}
+                        {favouriteList.length === 0 ? (
+                            <EmptyListAnimation title={'Favourite is Empty'} />
+                        ) : (
+                            favouriteList.map((coffee: Coffee) => (
+                                <View key={coffee.id} style={styles.ListItemContainer}>
+                                    <TouchableOpacity>
+                                        <FavoritesItemCard
+                                            id={coffee.id}
+                                            imagelink_portrait={coffee.imagelink_portrait}
+                                            name={coffee.name}
+                                            special_ingredient={coffee.special_ingredient}
+                                            type={coffee.type}
+                                            average_rating={coffee.average_rating}
+                                            roasted={coffee.roasted}
+                                            description={coffee.description}
+                                            favourite={coffee.favourite}
+                                            index={coffee.index}
+                                            removeFavourite={fetchFavouriteList}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            ))
+                        )}
                     </View>
                 </View>
             </ScrollView>
@@ -160,8 +163,8 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         marginTop: SPACING.space_10,
-        fontFamily: FONTFAMILY.poppins_regular, 
-        fontSize: FONTSIZE.size_16, 
+        fontFamily: FONTFAMILY.poppins_regular,
+        fontSize: FONTSIZE.size_16,
         color: COLORS.primaryDarkGreyHex,
     }
 });
