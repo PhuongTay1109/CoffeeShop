@@ -60,7 +60,7 @@ const FavoritesScreen = ({ navigation }: any) => {
                         const userData = doc.data();
                         if (userData && userData.ProductsList) {
                             const productsList = userData.ProductsList;
-                            const favouriteProducts = productsList.filter((product:any)=> product.favourite === true);
+                            const favouriteProducts = productsList.filter((product: any) => product.favourite === true);
                             setFavouriteList(favouriteProducts);
                         }
                     } else {
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         marginTop: SPACING.space_10,
-        fontFamily: FONTFAMILY.poppins_regular, 
-        fontSize: FONTSIZE.size_16, 
+        fontFamily: FONTFAMILY.poppins_regular,
+        fontSize: FONTSIZE.size_16,
         color: COLORS.primaryDarkGreyHex,
     }
 });
