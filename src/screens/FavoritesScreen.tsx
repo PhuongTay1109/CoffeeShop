@@ -108,27 +108,29 @@ const FavoritesScreen = ({ navigation }: any) => {
                     <View style={styles.ItemContainer}>
                         <HeaderBar title="Favourites" />
                         {favouriteList.length === 0 ? (
-                            <EmptyListAnimation title={'Favourite is Empty'} />
+                            <EmptyListAnimation title={'No Favourites'}  />
                         ) : (
-                            favouriteList.map((coffee: Coffee) => (
-                                <View key={coffee.id} style={styles.ListItemContainer}>
-                                    <TouchableOpacity>
-                                        <FavoritesItemCard
-                                            id={coffee.id}
-                                            imagelink_portrait={coffee.imagelink_portrait}
-                                            name={coffee.name}
-                                            special_ingredient={coffee.special_ingredient}
-                                            type={coffee.type}
-                                            average_rating={coffee.average_rating}
-                                            roasted={coffee.roasted}
-                                            description={coffee.description}
-                                            favourite={coffee.favourite}
-                                            index={coffee.index}
-                                            removeFavourite={fetchFavouriteList}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            ))
+                            <View>
+                                {favouriteList.map((coffee: Coffee) => (
+                                    <View key={coffee.id} style={styles.ListItemContainer}>
+                                        <TouchableOpacity>
+                                            <FavoritesItemCard
+                                                id={coffee.id}
+                                                imagelink_portrait={coffee.imagelink_portrait}
+                                                name={coffee.name}
+                                                special_ingredient={coffee.special_ingredient}
+                                                type={coffee.type}
+                                                average_rating={coffee.average_rating}
+                                                roasted={coffee.roasted}
+                                                description={coffee.description}
+                                                favourite={coffee.favourite}
+                                                index={coffee.index}
+                                                removeFavourite={fetchFavouriteList}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                ))}
+                            </View>
                         )}
                     </View>
                 </View>

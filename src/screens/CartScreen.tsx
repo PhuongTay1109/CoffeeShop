@@ -21,6 +21,7 @@ import getFirestore from "@react-native-firebase/firestore";
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
+
 interface CartItem {
     id: string;
     imagelink_square: string;
@@ -86,7 +87,9 @@ const CartScreen = ({ route }: { route: any }) => {
         }, [])
     );
 
-    const pay = () => { }
+    const pay = () => {
+        navigation.navigate('Payment');
+     }
 
     if (!cartItems) {
         return (
@@ -136,7 +139,7 @@ const CartScreen = ({ route }: { route: any }) => {
                     {cartItems.length != 0 ? (
                         <PaymentFooter price={totalPrice.toFixed(2)} text="PAY" onPress={pay} />
                         ) : (
-                            <></>
+                        <></>
                     )}
                 </View>
             </ScrollView>
