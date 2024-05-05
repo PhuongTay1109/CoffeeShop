@@ -74,108 +74,115 @@ const PaymentScreen = (props: any) => {
     };
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.paymentContainer}>
-                <View style={styles.headerBarContainerWithBack}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-                        <GradientBGIcon
-                            name="left"
-                            color={COLORS.primaryBlackHex}
-                            size={FONTSIZE.size_16}
-                        />
+        <ScrollView>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.paymentContainer}>
+                    <View style={styles.headerBarContainerWithBack}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+                            <GradientBGIcon
+                                name="left"
+                                color={COLORS.primaryBlackHex}
+                                size={FONTSIZE.size_16}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.orderContainer}>
+                        <View style={{marginVertical:3}}>
+                            {orderItems.map((item: any) => {
+                                return (
+                                    <View style={styles.order}>
+                                        <View style={styles.orderDetail}>
+                                            <View>
+                                                <Image source={item.imagelink_square} style={styles.orderImage} />
+                                            </View>
+                                            <View style={styles.name}>
+                                                <Text style={styles.nameText} numberOfLines={1} ellipsizeMode="tail">
+                                                    {item.name.length > 9 ? item.name.slice(0, 9) + '...' : item.name}
+                                                </Text>
+                                                <Text style={styles.sizeText} numberOfLines={1}>Size {item.size}</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.price}>
+                                            <Text style={styles.priceText}>{item.quantity} x ${item.price} = ${item.quantity * item.price}</Text>
+                                        </View>
+                                    </View>
+                                );
+                            })}
+                        </View>
+                        <View style={{ borderWidth: 0.5, borderColor: '#BDBDBD' }}></View>
+                        <View style={styles.total}>
+                            <Text style={styles.totalText}>Total (USD)</Text>
+                            <Text style={styles.totalText}>${totalAmount.toFixed(2)}</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <View>
+                            <Text style={styles.billText}>Billing address</Text>
+                        </View>
+                        <View>
+                            <View style={{ marginBottom: 20 }}>
+                                <Text style={styles.infoText}>Recipient name</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={recipientName}
+                                    onChangeText={(text) => setRecipientName(text)}
+                                    placeholder='Your name'
+                                    placeholderTextColor={COLORS.secondaryLightGreyHex}
+                                />
+                            </View>
+                            <View style={{ marginBottom: 20 }}>
+                                <Text style={styles.infoText}>Phone number</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={phoneNumber}
+                                    onChangeText={(text) => setPhoneNumber(text)}
+                                    placeholder='Your phone number'
+                                    placeholderTextColor={COLORS.secondaryLightGreyHex}
+                                />
+                            </View>
+                        </View>
+                        <View>
+                            <Text style={styles.infoText}>Address</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={address}
+                                onChangeText={(text) => setAddress(text)}
+                                placeholder='Your address'
+                                placeholderTextColor={COLORS.secondaryLightGreyHex}
+                            />
+                        </View>
+                    </View>
+                    <View>
+                        <Text style={styles.billText}>Payment</Text>
+                        <View style={{ display: 'flex', flexDirection: 'row' }}>
+                            <View style={styles.radioButton}>
+                                <View style={styles.circle}></View>
+                            </View>
+                            <Text style={styles.infoText}>Payment on delivery</Text>
+                        </View>
+                    </View>
+                    <TouchableOpacity onPress={handleOrder}>
+                        <View style={styles.orderBtn}>
+                            <Text style={styles.orderTxt}>Order</Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.orderContainer}>
-                    {orderItems.map((item: any) => {
-                        return (
-                            <View style={styles.order}>
-                                <View style={styles.orderDetail}>
-                                    <View>
-                                        <Image source={item.imagelink_square} style={styles.orderImage} />
-                                    </View>
-                                    <View style={styles.name}>
-                                        <Text style={styles.nameText}>{item.name}</Text>
-                                        <Text style={styles.sizeText} numberOfLines={1}>Size {item.size}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.price}>
-                                    <Text style={styles.priceText}>{item.quantity} x ${item.price} = ${item.quantity * item.price}</Text>
-                                </View>
-                            </View>
-                        );
-                    })}
-                    <View style={{ borderWidth: 0.5, borderColor: '#BDBDBD' }}></View>
-                    <View style={styles.total}>
-                        <Text style={styles.totalText}>Total (USD)</Text>
-                        <Text style={styles.totalText}>${totalAmount.toFixed(2)}</Text>
-                    </View>
-                </View>
-                <View style={styles.billInfo}>
-                    <View>
-                        <Text style={styles.billText}>Billing address</Text>
-                    </View>
-                    <View>
-                        <View style={{ marginBottom: 20 }}>
-                            <Text style={styles.infoText}>Recipient name</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={recipientName}
-                                onChangeText={(text) => setRecipientName(text)}
-                            />
-                        </View>
-                        <View style={{ marginBottom: 20 }}>
-                            <Text style={styles.infoText}>Phone number</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={phoneNumber}
-                                onChangeText={(text) => setPhoneNumber(text)}
-                            />
-                        </View>
-                    </View>
-                    <View>
-                        <Text style={styles.infoText}>Address</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={address}
-                            onChangeText={(text) => setAddress(text)}
-                        />
-                    </View>
-                </View>
-                <View style={styles.paymentContact}>
-                    <Text style={styles.billText}>Payment</Text>
-                    <View style={{ display: 'flex', flexDirection: 'row' }}>
-                        <View style={styles.radioButton}>
-                            <View style={styles.circle}></View>
-                        </View>
-                        <Text style={styles.infoText}>Payment on delivery</Text>
-                    </View>
-                </View>
-                <TouchableOpacity onPress={handleOrder}>
-                    <View style={styles.orderBtn}>
-                        <Text style={styles.orderTxt}>Order</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     paymentContainer: {
         paddingHorizontal: 20,
-        paddingVertical: 20,
+        paddingBottom: 20,
+        paddingTop: 10,
         backgroundColor: COLORS.primaryWhiteHex,
-        flex: 1
     },
     headerBarContainerWithBack: {
         flexDirection: 'row',
-        alignSelf: 'flex-start'
-    },
-    billInfo: {
-        flex: 4,
-    },
-    paymentContact: {
-        flex: 1,
+        alignSelf: 'flex-start',
+        marginBottom:5
     },
     order: {
         display: 'flex',
@@ -183,14 +190,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingTop: 10,
-        flex: 8
     },
     orderContainer: {
         width: '100%',
         borderWidth: 1,
         borderRadius: 20,
         borderColor: '#BDBDBD',
-        flex: 3,
     },
     orderImage: {
         width: 80,
@@ -210,7 +215,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_regular,
         fontSize: FONTSIZE.size_16,
         color: COLORS.primaryDarkGreyHex,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     sizeText: {
         fontFamily: FONTFAMILY.poppins_regular,

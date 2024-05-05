@@ -1,10 +1,11 @@
 /*eslint-disable */
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { COLORS, FONTFAMILY, SPACING } from '../theme/theme';
 import auth from '@react-native-firebase/auth';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/EvilIcons';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
+import CustomIcon from './CustomIcon';
 
 interface HeaderBarProps {
     title?: string;
@@ -12,31 +13,20 @@ interface HeaderBarProps {
 
 const HeaderBar: React.FC<HeaderBarProps> = ({ title }) => {
     const navigation: NavigationProp<any> = useNavigation();
-    const [showLogout, setShowLogout] = useState(false);
 
-    const user = auth().currentUser;
-    const username = user ? user.displayName : '';
     
-    const handleLogout = () => {
-        auth()
-            .signOut()
-            .then(() => navigation.navigate('Login'));
+    const infor = () => {
+        navigation.navigate('Infor');
     };
 
     return (
         <View style={styles.HeaderContainer}>
             <Text style={styles.HeaderText}>{title}</Text>
-            <View style={styles.UsernameContainer}>
-                <TouchableOpacity onPress={() => setShowLogout(!showLogout)}>
-                    <View style={styles.UsernameTextContainer}>
-                        <Text style={styles.UsernameText}>{username}</Text>
-                        <Icon name="caret-down" size={14} color={COLORS.primaryOrangeHex} />
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleLogout}>
-                    <Text style={[styles.LogoutText, !showLogout && styles.hidden]}>Logout</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={infor}>
+                <View style={{marginBottom:15}}>
+                    <Image source={require('../assets/app_images/avatar.png')} style={styles.image}/>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -54,33 +44,13 @@ const styles = StyleSheet.create({
         fontSize: 26,
         color: COLORS.primaryOrangeHex,
     },
-    UsernameContainer: {
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-    },
-    UsernameTextContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 30,
-    },
-    UsernameText: {
-        fontFamily: FONTFAMILY.poppins_medium,
-        fontSize: 14,
-        color: COLORS.primaryOrangeHex,
-        marginRight: 5,
-    },
-    LogoutText: {
-        fontFamily: FONTFAMILY.poppins_medium,
-        fontSize: 14,
-        color: COLORS.primaryBlackHex,
-        marginLeft: 5,
-        paddingHorizontal: 20,
-        backgroundColor: COLORS.primaryWhiteHex,
-        borderRadius: 5,
-        paddingVertical:2,
-    },
     hidden: {
         opacity: 0
+    },
+    image: {
+        width: 40,
+        height: 40,
+        marginTop: 10
     }
 });
 

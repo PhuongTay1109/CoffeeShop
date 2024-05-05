@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     },
     header: {
         backgroundColor: COLORS.primaryBlackHex,
-        height: 362
+        height: 345
     },
     footer: {
         marginTop: 50,
