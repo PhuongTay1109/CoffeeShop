@@ -1,4 +1,5 @@
-import {StyleSheet, Text, View, ImageProps, Image, TouchableOpacity} from 'react-native';
+/*eslint-disable */
+import { StyleSheet, Text, View, ImageProps, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -10,53 +11,31 @@ import {
 } from '../theme/theme';
 
 
-const OrderItemCard = () => {
+const OrderItemCard = (props: any) => {
+  const { imagelink_square, name, size, price, quantity } = props
   return (
     <TouchableOpacity activeOpacity={1}>
-        <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 1}}
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
         colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
         style={styles.CardLinearGradient}>
         <View style={styles.CardInfoContainer}>
-            <View style={styles.CardImageInfoContainer}>
-            <Image source={require("../assets/coffee_assets/americano/square/americano_pic_1_square.jpg")} style={styles.Image} />
+          <View style={styles.CardImageInfoContainer}>
+            <Image source={imagelink_square} style={styles.Image} />
             <View>
-                <Text style={styles.CardTitle}>Americano</Text>
-                <Text style={styles.CardSubtitle}>With Steamed Milk</Text>
+              <Text style={styles.CardTitle}>{name}</Text>
+              <Text style={styles.CardSubtitle}>Size {size} </Text>
+              <Text style={styles.CardSubtitle}>{quantity} x ${price} </Text>
             </View>
-            </View>
-            <View>
+          </View>
+          <View>
             <Text style={styles.CardCurrency}>
-                $ <Text style={styles.CardPrice}>4.20</Text>
+              $ <Text style={styles.CardPrice}>{(quantity*price).toFixed(2)}</Text>
             </Text>
-            </View>
+          </View>
         </View>
-            <View style={styles.CardTableRow}>
-            <View style={styles.CardTableRow}>
-                <View style={styles.SizeBoxLeft}>
-                <Text style={styles.SizeText}>
-                    S
-                </Text>
-                </View>
-                <View style={styles.PriceBoxRight}>
-                <Text style={styles.PriceCurrency}>
-                    $
-                    <Text style={styles.Price}> 4.20</Text>
-                </Text>
-                </View>
-            </View>
-
-            <View style={styles.CardTableRow}>
-                <Text style={styles.CardQuantityPriceText}>
-                X <Text style={styles.Quantity}>2</Text>
-                </Text>
-                <Text style={styles.CardQuantityPriceText}>
-                8.40
-                </Text>
-            </View>
-            </View>
-        </LinearGradient>
+      </LinearGradient>
     </TouchableOpacity>
   );
 };
@@ -68,7 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.radius_25,
     elevation: 10, // Tăng độ nâng của shadow
     shadowColor: COLORS.primaryBlackHex, // Màu shadow
-    shadowOffset: { width: 0, height: 2}, // Offset của shadow
+    shadowOffset: { width: 0, height: 2 }, // Offset của shadow
     shadowOpacity: 0.5, // Độ trong suốt của shadow
     shadowRadius: 1,
     marginBottom: 10
@@ -90,7 +69,7 @@ const styles = StyleSheet.create({
   },
   CardTitle: {
     fontFamily: FONTFAMILY.poppins_medium,
-    fontSize: FONTSIZE.size_18,
+    fontSize: FONTSIZE.size_14,
     color: COLORS.primaryBlackHex,
   },
   CardSubtitle: {

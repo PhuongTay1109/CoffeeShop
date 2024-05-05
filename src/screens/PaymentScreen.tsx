@@ -54,20 +54,23 @@ const PaymentScreen = (props: any) => {
             return;
         }
 
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+        const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
+
         const newOrder = {
             customerName: recipientName,
             phoneNumber: phoneNumber,
             address: address,
-            cartItems: orderItems,
+            orderItems: orderItems,
             totalAmount: totalAmount,
-            orderTime: new Date()
+            orderTime: `${formattedDate} ${formattedTime}`
         };
 
-        // Thêm đơn hàng mới vào Firestore
         addOrderToFirestore(newOrder);
 
         Alert.alert("You have successfully placed your order!");
-        navigation.navigate('Home');
+        navigation.navigate('History');
     };
 
     return (
