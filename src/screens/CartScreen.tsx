@@ -20,6 +20,7 @@ import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 
 interface CartItem {
@@ -34,7 +35,13 @@ interface CartItem {
     size: string;
 }
 
-const CartScreen = ({ route }: { route: any }) => {
+type RootStackParamList = {
+    Payment: {
+        orderItems: CartItem[];
+    };
+};
+
+const CartScreen = () => {
     const tabBarHeight = useBottomTabBarHeight();
     const navigation: NavigationProp<any> = useNavigation();
 
@@ -87,9 +94,14 @@ const CartScreen = ({ route }: { route: any }) => {
         }, [])
     );
 
+    const navi: StackNavigationProp<RootStackParamList> = useNavigation();
     const pay = () => {
-        navigation.navigate('Payment');
-     }
+        if (cartItems != null) {            
+            navi.push('Payment', {
+                orderItems: cartItems
+            });
+        }
+    }
 
     if (!cartItems) {
         return (
@@ -113,10 +125,10 @@ const CartScreen = ({ route }: { route: any }) => {
                     <View style={styles.ItemContainer}>
                         <HeaderBar title="Cart" />
                         {cartItems.length === 0 ? (
-                            <EmptyListAnimation title={'Cart is Empty'}  />
+                            <EmptyListAnimation title={'Cart is Empty'} />
                         ) : (
                             <View style={styles.ListItemContainer}>
-                                {cartItems.map((item) => {                                
+                                {cartItems.map((item) => {
                                     return (
                                         <TouchableOpacity key={item.id + item.size}>
                                             <CartItem
@@ -138,7 +150,7 @@ const CartScreen = ({ route }: { route: any }) => {
                     </View>
                     {cartItems.length != 0 ? (
                         <PaymentFooter price={totalPrice.toFixed(2)} text="PAY" onPress={pay} />
-                        ) : (
+                    ) : (
                         <></>
                     )}
                 </View>
