@@ -70,7 +70,7 @@ const PaymentScreen = (props: any) => {
         addOrderToFirestore(newOrder);
 
         Alert.alert("You have successfully placed your order!");
-        navigation.navigate('Home');
+        navigation.navigate('History');
     };
 
     return (
