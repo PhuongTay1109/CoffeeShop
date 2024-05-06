@@ -158,7 +158,7 @@ const HomeScreen = ({ navigation }: any) => {
     const tabBarHeight = useBottomTabBarHeight();
 
     const searchCoffee = (search: string) => {
-        if (search != '' && CoffeeList) { // Kiểm tra CoffeeList không phải null
+        if (search != '' && CoffeeList) {
             ListRef?.current?.scrollToOffset({
                 animated: true,
                 offset: 0,
