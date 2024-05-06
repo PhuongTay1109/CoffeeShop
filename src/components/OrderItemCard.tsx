@@ -13,6 +13,7 @@ import {
 
 const OrderItemCard = (props: any) => {
   const { imagelink_square, name, size, price, quantity } = props
+  const processedName = name.length > 9 ? name.slice(0, 9) + '...' : name;
   return (
     <TouchableOpacity activeOpacity={1}>
       <LinearGradient
@@ -24,7 +25,7 @@ const OrderItemCard = (props: any) => {
           <View style={styles.CardImageInfoContainer}>
             <Image source={imagelink_square} style={styles.Image} />
             <View>
-              <Text style={styles.CardTitle}>{name}</Text>
+              <Text style={styles.CardTitle}>{processedName}</Text>
               <Text style={styles.CardSubtitle}>Size {size} </Text>
               <Text style={styles.CardSubtitle}>{quantity} x ${price} </Text>
             </View>

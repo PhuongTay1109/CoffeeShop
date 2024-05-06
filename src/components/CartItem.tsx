@@ -132,11 +132,11 @@
                 </View>
                 </View>
                 <View>
-                <TouchableOpacity
-                    style={[styles.TrashIconContainer, styles.CartItemIcon]}
-                    onPress={removeItemFromCart}>
-                    <Icon name="remove" size={20} color={COLORS.primaryWhiteHex} />
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.TrashIconContainer}
+                        onPress={removeItemFromCart}>
+                        <Icon name="remove" size={18} color={COLORS.primaryWhiteHex} />
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.CartItemSizeRowContainer}>
@@ -317,6 +317,9 @@
         top: 0,
         right: 0,
         marginBottom: 30,
+        backgroundColor: COLORS.primaryOrangeHex,
+        padding: SPACING.space_8,
+        borderRadius: BORDERRADIUS.radius_10,
     },
     TrashText: {
         color: COLORS.primaryWhiteHex,
