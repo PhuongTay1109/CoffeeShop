@@ -1,4 +1,5 @@
-import React from 'react'
+/*eslint-disable */
+import React, { useState, useEffect } from 'react'
 import { View,Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/EvilIcons'
 import { COLORS, FONTFAMILY, FONTSIZE } from '../theme/theme'
@@ -8,11 +9,31 @@ import auth from '@react-native-firebase/auth';
 
 function InforScreen() {
     const navigation: NavigationProp<any> = useNavigation();
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    
+    const fetchUser = async () => {
+        try {
+            const currentUser = auth().currentUser;
+            if (currentUser && currentUser.email && currentUser.displayName) {
+                setEmail(currentUser.email);
+                setUsername(currentUser.displayName);                
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     const handleLogout = () => {
         auth()
             .signOut()
             .then(() => navigation.navigate('Login'));
     };
+
     return (
         <View style={styles.inforContainer}>
             <View style={styles.header}>
@@ -29,22 +50,22 @@ function InforScreen() {
                     <Image source={require('../assets/app_images/avatar.png')} style={styles.image}/>
                 </View>
                 <View>
-                    <Text style={styles.name}>Name</Text>
+                    <Text style={styles.name}>{username}</Text>
                 </View>
                 <View>
-                    <Text style={styles.email}>email@gmail.com</Text>
+                    <Text style={styles.email}>{email}</Text>
                 </View>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.icon} >
+                <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Favorite')}>
                     <Icon name='heart' size={40} color={COLORS.primaryOrangeHex}/>
                     <Text style={styles.text}>Favourites</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.icon} >
+                <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Cart')}>
                     <Icon name='cart' size={40} color={COLORS.primaryOrangeHex}/>
                     <Text style={styles.text}>Cart</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.icon} >
+                <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('History')}>
                     <Icon name='bell' size={40} color={COLORS.primaryOrangeHex}/>
                     <Text style={styles.text}>Order History</Text>
                 </TouchableOpacity>
