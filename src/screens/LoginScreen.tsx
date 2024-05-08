@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     },
     toggleVisibilityIcon: {
         position: 'absolute',
-        top: '50%',
+        top: 70,
         right: 50,
         transform: [{ translateY: -20}]
     },
