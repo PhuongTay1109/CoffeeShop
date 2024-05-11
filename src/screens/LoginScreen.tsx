@@ -1,7 +1,7 @@
 /*eslint-disable */
 
 import React, { useCallback, useEffect, useReducer, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ActivityIndicator } from "react-native";
 import { useNavigation, NavigationProp, useFocusEffect } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { COLORS, FONTFAMILY, FONTSIZE } from "../theme/theme";
@@ -64,6 +64,11 @@ const LoginScreen = ({ route }: { route: any }) => {
 
     return (
         <View style={styles.container}>
+            {isLoading && (
+                <View style={styles.loadingOverlay}>
+                    <ActivityIndicator size="large" color={COLORS.primaryOrangeHex} />
+                </View>
+            )}
             <View>
                 <Image
                     source={require("../assets/app_images/coffee-branch.jpg")}
@@ -121,7 +126,7 @@ const LoginScreen = ({ route }: { route: any }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: COLORS.primaryWhiteHex,
-        flex: 1,
+        flex: 1
     },
     topImage: {
         width: "100%",
@@ -188,6 +193,12 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         zIndex: 999
+    },
+    loadingOverlay: {
+        ...StyleSheet.absoluteFillObject, // Đặt overlay full màn hình
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Lớp mờ trắng
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
 

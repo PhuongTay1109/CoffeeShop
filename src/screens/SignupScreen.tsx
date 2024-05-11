@@ -11,6 +11,7 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     Alert,
+    ActivityIndicator,
 }
     from "react-native";
 
@@ -108,10 +109,11 @@ const SignupScreen = () => {
                 OrderHistoryList: []
             });
 
-            setIsLoading(false);
+            setIsLoading(true);
             setRedirectToLogin(true);
             setAlertMessage('You have successfully registered an account. Please login first!');
             setShowAlert(true);
+            setIsLoading(false);
         } catch (error: any) {
             setIsLoading(false);
             if (error.code === 'auth/email-already-in-use') {
@@ -133,6 +135,11 @@ const SignupScreen = () => {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={styles.container}>
+                    {isLoading && (
+                        <View style={styles.loadingOverlay}>
+                            <ActivityIndicator size="large" color={COLORS.primaryOrangeHex} />
+                        </View>
+                    )}
                     <View>
                         <Image
                             source={require("../assets/app_images/coffee-branch.jpg")}
@@ -267,6 +274,12 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         zIndex: 999
+    },
+    loadingOverlay: {
+        ...StyleSheet.absoluteFillObject, // Đặt overlay full màn hình
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Lớp mờ trắng
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
 
