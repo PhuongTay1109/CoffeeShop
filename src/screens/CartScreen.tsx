@@ -9,7 +9,6 @@ import {
     TouchableOpacity,
     ActivityIndicator,
 } from 'react-native';
-import { useStore } from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
 import PaymentFooter from '../components/PaymentFooter';
@@ -19,7 +18,7 @@ import HeaderBar from '../components/HeaderBar';
 import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
 import { useFocusEffect } from '@react-navigation/native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 
@@ -43,7 +42,6 @@ type RootStackParamList = {
 
 const CartScreen = () => {
     const tabBarHeight = useBottomTabBarHeight();
-    const navigation: NavigationProp<any> = useNavigation();
 
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
@@ -111,8 +109,6 @@ const CartScreen = () => {
             </View>
         );
     }
-
-    console.log(cartItems);
 
     return (
         <View style={styles.ScreenContainer}>

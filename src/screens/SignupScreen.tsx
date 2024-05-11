@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     Platform,
     KeyboardAvoidingView,
-    ScrollView,
     TouchableWithoutFeedback,
     Keyboard,
     Alert,
@@ -27,6 +26,7 @@ import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import getFirestore from "@react-native-firebase/firestore";
 import CoffeeData from "../data/CoffeeData";
+import CustomAlert from "../components/CustomAlert";
 
 const isTestMode = true;
 const initialState = {
@@ -50,6 +50,16 @@ const SignupScreen = () => {
 
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
+    };
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
+    const handleAlertClose = () => {
+        setShowAlert(false);
+        if (redirectToLogin) {
+            navigation.navigate('Login');
+        }
     };
 
     const inputChangedHandler = useCallback((inputId: any, inputValue: any) => {
@@ -79,13 +89,13 @@ const SignupScreen = () => {
             );
 
             const user = auth().currentUser;
-            
+
             if (user) {
                 await user.updateProfile({
                     displayName: formState.inputValues.username
                 });
             }
-            
+
             const preparedData = CoffeeData.map((item, index) => {
                 return { ...item, index };
             });
@@ -99,13 +109,19 @@ const SignupScreen = () => {
             });
 
             setIsLoading(false);
-            navigation.navigate('Login');
+            setRedirectToLogin(true);
+            setAlertMessage('You have successfully registered an account. Please login first!');
+            setShowAlert(true);
         } catch (error: any) {
             setIsLoading(false);
             if (error.code === 'auth/email-already-in-use') {
-                Alert.alert('That email address is already in use!');
+                setAlertMessage('That email address is already in use!');
+                setShowAlert(true);
             }
-            Alert.alert(error);
+            else {
+                setAlertMessage('An error occurred while signing up. Please try again later.');
+                setShowAlert(true);
+            }
         }
     };
 
@@ -179,6 +195,13 @@ const SignupScreen = () => {
                             </Text>
                         </TouchableOpacity>
                     </View>
+                    {showAlert && (
+                        <View style={styles.modalBackground}>
+                            <View style={styles.customAlertContainer}>
+                                <CustomAlert message={alertMessage} onClose={handleAlertClose} />
+                            </View>
+                        </View>
+                    )}
                 </SafeAreaView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -222,10 +245,29 @@ const styles = StyleSheet.create({
     },
     toggleVisibilityIcon: {
         position: 'absolute',
-        top: '50%',
+        top: 70,
         right: 50,
         transform: [{ translateY: -20 }]
     },
+    customAlertContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 9999,
+    },
+    modalBackground: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 999
+    }
 });
 
 export default SignupScreen;

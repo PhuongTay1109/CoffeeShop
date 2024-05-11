@@ -98,6 +98,7 @@ const OrderHistoryScreen = () => {
                             {orderHistoryList.map((item: any) => {
                                 return (
                                     <OrderHistoryCard 
+                                        key={item.index}
                                         orderItems={item.orderItems}
                                         totalAmount={item.totalAmount}
                                         orderTime={item.orderTime}                                    
