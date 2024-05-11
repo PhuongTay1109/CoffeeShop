@@ -97,11 +97,13 @@ const OrderHistoryScreen = () => {
                         <View style={styles.ListItemContainer}>
                             {orderHistoryList.map((item: any) => {
                                 return (
-                                    <OrderHistoryCard 
-                                        orderItems={item.orderItems}
-                                        totalAmount={item.totalAmount}
-                                        orderTime={item.orderTime}                                    
-                                    />
+                                    <View key={item.index}>
+                                        <OrderHistoryCard 
+                                            orderItems={item.orderItems}
+                                            totalAmount={item.totalAmount}
+                                            orderTime={item.orderTime}                                    
+                                        />
+                                    </View>
                                 );
                             })}                            
                         </View>

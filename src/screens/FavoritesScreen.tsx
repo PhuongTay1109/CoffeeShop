@@ -42,7 +42,7 @@ interface Coffee {
     type: string;
 }
 
-const FavoritesScreen = ({ navigation }: any) => {
+const FavoritesScreen = () => {
     const tabBarHeight = useBottomTabBarHeight();
 
     const db = getFirestore();

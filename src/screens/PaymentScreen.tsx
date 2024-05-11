@@ -6,6 +6,7 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import GradientBGIcon from '../components/GradientBGIcon';
 import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
+import CustomAlert from '../components/CustomAlert';
 
 const PaymentScreen = (props: any) => {
     const orderItems = props.route.params.orderItems;
@@ -48,9 +49,18 @@ const PaymentScreen = (props: any) => {
         }
     };
 
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleAlertClose = () => {
+        setShowAlert(false);
+        navigation.navigate("History");
+    };
+
     const handleOrder = () => {
         if (!recipientName || !phoneNumber || !address) {
-            Alert.alert('Please fill in complete customer information.');
+            setAlertMessage('Please fill in complete customer information!');
+            setShowAlert(true);
             return;
         }
 
@@ -69,8 +79,8 @@ const PaymentScreen = (props: any) => {
 
         addOrderToFirestore(newOrder);
 
-        Alert.alert("You have successfully placed your order!");
-        navigation.navigate('History');
+        setAlertMessage('You have successfully placed your order!');
+        setShowAlert(true);
     };
 
     return (
@@ -78,7 +88,7 @@ const PaymentScreen = (props: any) => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.paymentContainer}>
                     <View style={styles.headerBarContainerWithBack}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
                             <GradientBGIcon
                                 name="left"
                                 color={COLORS.primaryBlackHex}
@@ -87,10 +97,10 @@ const PaymentScreen = (props: any) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.orderContainer}>
-                        <View style={{marginVertical:3}}>
+                        <View style={{ marginVertical: 3 }}>
                             {orderItems.map((item: any) => {
                                 return (
-                                    <View style={styles.order}>
+                                    <View style={styles.order} key={item.index}>
                                         <View style={styles.orderDetail}>
                                             <View>
                                                 <Image source={item.imagelink_square} style={styles.orderImage} />
@@ -168,6 +178,13 @@ const PaymentScreen = (props: any) => {
                     </TouchableOpacity>
                 </View>
             </TouchableWithoutFeedback>
+            {showAlert && (
+                <View style={styles.modalBackground}>
+                    <View style={styles.customAlertContainer}>
+                        <CustomAlert message={alertMessage} onClose={handleAlertClose} />
+                    </View>
+                </View>
+            )}
         </ScrollView>
     )
 }
@@ -182,7 +199,7 @@ const styles = StyleSheet.create({
     headerBarContainerWithBack: {
         flexDirection: 'row',
         alignSelf: 'flex-start',
-        marginBottom:5
+        marginBottom: 5
     },
     order: {
         display: 'flex',
@@ -298,6 +315,25 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_bold,
         fontSize: FONTSIZE.size_20,
         color: COLORS.primaryWhiteHex,
+    },
+    customAlertContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 9999,
+    },
+    modalBackground: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 999
     }
 })
 

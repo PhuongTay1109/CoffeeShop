@@ -31,7 +31,12 @@ function InforScreen() {
     const handleLogout = () => {
         auth()
             .signOut()
-            .then(() => navigation.navigate('Login'));
+            .then(() => {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }],
+                });
+            });
     };
 
     return (
@@ -61,7 +66,7 @@ function InforScreen() {
                     <Icon name='heart' size={40} color={COLORS.primaryOrangeHex}/>
                     <Text style={styles.text}>Favourites</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Cart')}>
+                <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Tab', { screen: 'Cart' })}>
                     <Icon name='cart' size={40} color={COLORS.primaryOrangeHex}/>
                     <Text style={styles.text}>Cart</Text>
                 </TouchableOpacity>

@@ -61,7 +61,6 @@ const ImageBackgroundInfo = (props: any) => {
             });
 
             if (props.removeFavourite) {
-              console.log(props.removeFavourite);
               props.removeFavourite();
             }
           }
