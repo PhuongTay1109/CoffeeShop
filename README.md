@@ -1,43 +1,16 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
-
-# Getting Started
-
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions, before proceeding.
-
-## Step 1: Start the Metro Server
-
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
-
-```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Start Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of this React Native project. Run the following command to start this _Android_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-If everything is set up _correctly_, you should see this app running in your _Android Emulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run this app — you can also run it directly from within Android Studio and Xcode respectively.
-
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
+<h1>Coffee Shop</h1>
+<h2>Description</h2>
+<p>Coffee Shop is a mobile application built using React Native and Firebase. It serves as an online platform for a coffee shop, allowing users to browse, search, and purchase coffee products.</p>
+<h2>Features</h2>
+<ul>
+  <li>User authentication</li>
+  <li>Product browsing and searching</li>
+  <li>Shopping cart functionality</li>
+  <li>Checkout and payment processing</li>
+  <li>User profile management</li>
+</ul>
+<h2>Technologies Used</h2>
+<ul>
+  <li>React Native</li>
+  <li>Firebase</li>
+</ul>
