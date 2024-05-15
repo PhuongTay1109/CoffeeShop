@@ -22,19 +22,35 @@ const OrderItemCard = (props: any) => {
         colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
         style={styles.CardLinearGradient}>
         <View style={styles.CardInfoContainer}>
-          <View style={styles.CardImageInfoContainer}>
-            <Image source={imagelink_square} style={styles.Image} />
-            <View>
-              <Text style={styles.CardTitle}>{processedName}</Text>
-              <Text style={styles.CardSubtitle}>Size {size} </Text>
-              <Text style={styles.CardSubtitle}>{quantity} x ${price} </Text>
+            <View style={styles.CardImageInfoContainer}>
+                <Image source={imagelink_square} style={styles.Image} />
+                <View>
+                    <Text style={styles.CardTitle}>{processedName}</Text>
+                    <View style={styles.CardTableRow}>
+                        <View style={styles.SizeBoxLeft}>
+                            <Text style={styles.Price}>
+                                {size}
+                            </Text>
+                        </View>
+                        <View style={styles.PriceBoxRight}>
+                            <Text style={styles.PriceCurrency}>
+                                $
+                                <Text style={styles.Price}> {price}</Text>
+                            </Text>
+                        </View>
+                    </View>
+                </View>
             </View>
-          </View>
-          <View>
-            <Text style={styles.CardCurrency}>
-              $ <Text style={styles.CardPrice}>{(quantity*price).toFixed(2)}</Text>
-            </Text>
-          </View>
+            <View>
+                <Text style={styles.CardCurrency}>
+                    $ <Text style={styles.CardPrice}>{(quantity*price).toFixed(2)}</Text>
+                </Text>
+                <View style={styles.CardTableRow}>
+                            <Text style={styles.CardQuantityPriceText}>
+                            X <Text style={styles.Price2}>{quantity}</Text>
+                            </Text>
+                        </View>
+                </View>
         </View>
       </LinearGradient>
     </TouchableOpacity>
@@ -60,7 +76,7 @@ const styles = StyleSheet.create({
   },
   CardImageInfoContainer: {
     flexDirection: 'row',
-    gap: SPACING.space_20,
+    gap: SPACING.space_10,
     alignItems: 'center',
   },
   Image: {
@@ -82,6 +98,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_20,
     color: COLORS.primaryOrangeHex,
+    top: -5
   },
   CardPrice: {
     color: COLORS.primaryBlackHex,
@@ -95,13 +112,13 @@ const styles = StyleSheet.create({
   SizeBoxLeft: {
     backgroundColor: COLORS.primaryBlackHex,
     height: 45,
-    flex: 1,
     borderTopLeftRadius: BORDERRADIUS.radius_10,
     borderBottomLeftRadius: BORDERRADIUS.radius_10,
     justifyContent: 'center',
     alignItems: 'center',
     borderRightWidth: 1,
     borderRightColor: COLORS.primaryGreyHex,
+    width: 45,
   },
   SizeText: {
     fontFamily: FONTFAMILY.poppins_medium,
@@ -111,13 +128,14 @@ const styles = StyleSheet.create({
   PriceBoxRight: {
     backgroundColor: COLORS.primaryBlackHex,
     height: 45,
-    flex: 1,
+    width: 60,
     borderTopRightRadius: BORDERRADIUS.radius_10,
     borderBottomRightRadius: BORDERRADIUS.radius_10,
     justifyContent: 'center',
     alignItems: 'center',
     borderLeftWidth: 1,
     borderLeftColor: COLORS.primaryGreyHex,
+    paddingRight: 3,
   },
   PriceCurrency: {
     fontFamily: FONTFAMILY.poppins_semibold,
@@ -125,7 +143,12 @@ const styles = StyleSheet.create({
     color: COLORS.primaryOrangeHex,
   },
   Price: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_18,
     color: COLORS.primaryWhiteHex,
+  },
+  Price2: {
+    color: COLORS.primaryBlackHex,
   },
   Quantity: {
     color: COLORS.primaryBlackHex
