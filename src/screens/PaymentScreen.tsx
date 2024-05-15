@@ -125,7 +125,7 @@ const PaymentScreen = (props: any) => {
                             <Text style={styles.totalText}>${totalAmount.toFixed(2)}</Text>
                         </View>
                     </View>
-                    <View>
+                    <View style={{marginVertical: 30}}>
                         <View>
                             <Text style={styles.billText}>Billing address</Text>
                         </View>
@@ -162,7 +162,7 @@ const PaymentScreen = (props: any) => {
                             />
                         </View>
                     </View>
-                    <View>
+                    <View style={{marginBottom: 30}}>
                         <Text style={styles.billText}>Payment</Text>
                         <View style={{ display: 'flex', flexDirection: 'row' }}>
                             <View style={styles.radioButton}>
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingTop: 10,
         backgroundColor: COLORS.primaryWhiteHex,
+        height: '100%'
     },
     headerBarContainerWithBack: {
         flexDirection: 'row',
