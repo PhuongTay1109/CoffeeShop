@@ -77,6 +77,15 @@ const PaymentScreen = (props: any) => {
         <ScrollView>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.paymentContainer}>
+                    <View style={styles.headerBarContainerWithBack}>
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <GradientBGIcon
+                                name="left"
+                                color={COLORS.primaryBlackHex}
+                                size={FONTSIZE.size_16}
+                            />
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.orderContainer}>
                         <View style={{marginVertical:3}}>
                             {orderItems.map((item: any) => {
