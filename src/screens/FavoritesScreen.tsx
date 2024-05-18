@@ -10,7 +10,6 @@ import {
     TouchableOpacity,
     ActivityIndicator,
 } from 'react-native';
-import { useStore } from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
 import HeaderBar from '../components/HeaderBar';
@@ -20,6 +19,8 @@ import FavoritesItemCard from '../components/FavoritesItemCard';
 import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
 import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Price {
     size: string;
@@ -42,7 +43,7 @@ interface Coffee {
     type: string;
 }
 
-const FavoritesScreen = () => {
+const FavoritesScreen = ({navigation}: any) => {
     const tabBarHeight = useBottomTabBarHeight();
 
     const db = getFirestore();
@@ -113,7 +114,24 @@ const FavoritesScreen = () => {
                             <View>
                                 {favouriteList.map((coffee: Coffee) => (
                                     <View key={coffee.id} style={styles.ListItemContainer}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                             onPress={() => {
+                                                navigation.push('Details', {
+                                                    index: coffee.index,
+                                                    id: coffee.id,
+                                                    type: coffee.type,
+                                                    roasted: coffee.roasted,
+                                                    imagelink_portrait: coffee.imagelink_portrait,
+                                                    name: coffee.name,
+                                                    average_rating: coffee.average_rating,
+                                                    price: coffee.prices,
+                                                    description: coffee.description,
+                                                    favourite: coffee.favourite,
+                                                    imagelink_square: coffee.imagelink_square,
+                                                    special_ingredient: coffee.special_ingredient,
+                                                    is_from_favourites_screen: true
+                                                });
+                                            }}>
                                             <FavoritesItemCard
                                                 id={coffee.id}
                                                 imagelink_portrait={coffee.imagelink_portrait}
