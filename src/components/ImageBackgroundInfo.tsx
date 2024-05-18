@@ -23,15 +23,19 @@ import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
 
 const ImageBackgroundInfo = (props: any) => {
-  const { average_rating, name, roasted, imagelink_portrait, special_ingredient } = props;
+  const { average_rating, name, roasted, imagelink_portrait, special_ingredient, is_from_favourites_screen } = props;
 
 
   const navigation: NavigationProp<any> = useNavigation();
 
   // Handle left press
-  const goBackToHomePage = () => {
+  const goBack = () => {
+    if(is_from_favourites_screen) {
+      navigation.goBack();
+    }
     navigation.navigate('Tab');
-    props.reloadData();
+    if(props.reloadData != undefined)
+      props.reloadData();
   };
 
   const db = getFirestore();
@@ -78,7 +82,7 @@ const ImageBackgroundInfo = (props: any) => {
         style={styles.ItemBackgroundImage}>
         <View style={styles.ImageHeaderBarContainerWithBack}>
           {props.showLeftIcon && (
-            <TouchableOpacity onPress={goBackToHomePage}>
+            <TouchableOpacity onPress={goBack}>
               <GradientBGIcon
                 name="left"
                 color={COLORS.primaryBlackHex}
