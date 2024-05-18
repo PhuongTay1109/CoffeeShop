@@ -115,6 +115,8 @@ const SignupScreen = () => {
             style={{ flex: 1 }}
             enabled={Platform.OS === 'ios'}
         >
+            <ScrollView>
+
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={styles.container}>
                     <View>
@@ -181,6 +183,7 @@ const SignupScreen = () => {
                     </View>
                 </SafeAreaView>
             </TouchableWithoutFeedback>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 };
@@ -222,7 +225,7 @@ const styles = StyleSheet.create({
     },
     toggleVisibilityIcon: {
         position: 'absolute',
-        top: '50%',
+        top: 70,
         right: 50,
         transform: [{ translateY: -20 }]
     },

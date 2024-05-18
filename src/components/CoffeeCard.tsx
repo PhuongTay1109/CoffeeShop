@@ -90,14 +90,14 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2}, // Offset của shadow
         shadowOpacity: 0.5, // Độ trong suốt của shadow
         shadowRadius: 1, // Bán kính của shadow
-        width: 200,
+        width: 170,
         height: 270,
     },
     CardImageBG: {
         borderRadius: BORDERRADIUS.radius_20,
         marginBottom: SPACING.space_15,
         overflow: 'hidden',
-        width: 165,
+        width: 140,
         height: 120
     },
     CardRatingContainer: {

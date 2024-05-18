@@ -319,7 +319,6 @@ const HomeScreen = ({ navigation }: any) => {
 
                     {/* Coffee list */}
                     <FlatList
-                        horizontal={true}
                         ref={ListRef}
                         ListEmptyComponent={
                             <View style={styles.EmptyListContainer}>
@@ -347,7 +346,8 @@ const HomeScreen = ({ navigation }: any) => {
                                             description: item.description,
                                             favourite: item.favourite,
                                             reloadData: reloadData,
-                                            imagelink_square: item.imagelink_square
+                                            imagelink_square: item.imagelink_square,
+                                            special_ingredient: item.special_ingredient
                                         });
                                     }}>
                                     <CoffeeCard

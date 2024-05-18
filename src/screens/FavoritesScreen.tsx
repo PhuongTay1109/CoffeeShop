@@ -113,7 +113,22 @@ const FavoritesScreen = ({ navigation }: any) => {
                             <View>
                                 {favouriteList.map((coffee: Coffee) => (
                                     <View key={coffee.id} style={styles.ListItemContainer}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                        onPress={() => {
+                                            navigation.push('Details', {
+                                                index: coffee.index,
+                                                id: coffee.id,
+                                                type: coffee.type,
+                                                roasted: coffee.roasted,
+                                                imagelink_portrait: coffee.imagelink_portrait,
+                                                name: coffee.name,
+                                                average_rating: coffee.average_rating,
+                                                price: coffee.prices,
+                                                description: coffee.description,
+                                                favourite: coffee.favourite,
+                                                imagelink_square: coffee.imagelink_square
+                                            });
+                                        }}>
                                             <FavoritesItemCard
                                                 id={coffee.id}
                                                 imagelink_portrait={coffee.imagelink_portrait}

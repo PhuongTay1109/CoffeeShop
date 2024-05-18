@@ -27,7 +27,9 @@ import { useFocusEffect } from '@react-navigation/native';
 interface OrderHistory {
     orderItems: any,
     totalAmount: number,
-    orderTime: any
+    orderTime: any,
+    phoneNumber: string,
+    address: string
 }
 
 const OrderHistoryScreen = () => {
@@ -100,7 +102,9 @@ const OrderHistoryScreen = () => {
                                     <OrderHistoryCard 
                                         orderItems={item.orderItems}
                                         totalAmount={item.totalAmount}
-                                        orderTime={item.orderTime}                                    
+                                        orderTime={item.orderTime} 
+                                        phoneNumber={item.phoneNumber}
+                                        address={item.address}                                   
                                     />
                                 );
                             })}                            
