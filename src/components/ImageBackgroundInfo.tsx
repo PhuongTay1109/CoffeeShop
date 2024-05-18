@@ -23,7 +23,7 @@ import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
 
 const ImageBackgroundInfo = (props: any) => {
-  const { average_rating, name, roasted, imagelink_portrait } = props;
+  const { average_rating, name, roasted, imagelink_portrait, special_ingredient } = props;
 
 
   const navigation: NavigationProp<any> = useNavigation();
@@ -101,7 +101,7 @@ const ImageBackgroundInfo = (props: any) => {
               <View>
                 <Text style={styles.ItemTitleText}>{name}</Text>
                 <Text style={styles.ItemSubtitleText}>
-                  Iced
+                  {special_ingredient}
                 </Text>
               </View>
             </View>

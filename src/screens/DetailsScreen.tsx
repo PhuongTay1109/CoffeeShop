@@ -30,7 +30,7 @@ const DetailsScreen = (props: any) => {
   const [alertMessage, setAlertMessage] = useState('');
 
   const { index, id, roasted, imagelink_portrait, name,
-    average_rating, price, description, favourite, reloadData, imagelink_square } = props.route.params;
+    average_rating, price, description, favourite, reloadData, imagelink_square, special_ingredient } = props.route.params;
 
   // State to hold the selected size
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -109,6 +109,7 @@ const DetailsScreen = (props: any) => {
           index={index}
           reloadData={reloadData}
           showLeftIcon={true}
+          special_ingredient={special_ingredient}
         />
 
         <View style={styles.FooterInfoArea}>
