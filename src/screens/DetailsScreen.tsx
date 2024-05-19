@@ -1,6 +1,6 @@
 /*eslint-disable */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -23,9 +23,14 @@ import PaymentFooter from '../components/PaymentFooter';
 import auth from '@react-native-firebase/auth';
 import getFirestore from "@react-native-firebase/firestore";
 import { useNavigation, NavigationProp } from '@react-navigation/native';
+import CustomAlert from '../components/CustomAlert';
 
 const DetailsScreen = (props: any) => {
-  const { index, id, roasted, imagelink_portrait, name, average_rating, price, description, favourite, reloadData, imagelink_square, special_ingredient } = props.route.params;
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const { index, id, roasted, imagelink_portrait, name,
+    average_rating, price, description, favourite, reloadData, imagelink_square, special_ingredient, is_from_favourites_screen } = props.route.params;
 
   // State to hold the selected size
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -54,30 +59,31 @@ const DetailsScreen = (props: any) => {
             imagelink_square,
             roasted
           };
-  
+
           const snapshot = await userDocRef.get();
           const userData = snapshot.data();
           if (userData) {
             let cartList = userData.CartList || [];
-  
+
             // Tìm kiếm sản phẩm trong giỏ hàng
             const foundIndex = cartList.findIndex((item: any) => item.id === id && item.size === selectedSize);
-  
+
             if (foundIndex !== -1) {
               // Nếu sản phẩm đã tồn tại, cập nhật số lượng
               cartList[foundIndex].quantity += 1;
-              
+
             } else {
               // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
-              cartList.push(selectedItem);      
-            }  
+              cartList.push(selectedItem);
+            }
 
             // Cập nhật lại danh sách giỏ hàng vào Firebase
             await userDocRef.update({
               CartList: cartList
             });
 
-            Alert.alert('Item added to cart successfully!');              
+            setAlertMessage('Item added to cart successfully!');
+            setShowAlert(true);
           }
         }
       }
@@ -85,7 +91,7 @@ const DetailsScreen = (props: any) => {
       console.error('Error adding item to cart:', error);
     }
   };
-  
+
 
   return (
     <View style={styles.ScreenContainer}>
@@ -104,6 +110,7 @@ const DetailsScreen = (props: any) => {
           reloadData={reloadData}
           showLeftIcon={true}
           special_ingredient={special_ingredient}
+          is_from_favourites_screen={is_from_favourites_screen}
         />
 
         <View style={styles.FooterInfoArea}>
@@ -125,8 +132,15 @@ const DetailsScreen = (props: any) => {
           </View>
         </View>
         <PaymentFooter price={selectedPrice} text="ADD TO CART" onPress={addToCart} />
-      </ScrollView>
-    </View>
+        {showAlert && (
+          <View style={styles.modalBackground}>
+            <View style={styles.customAlertContainer}>
+              <CustomAlert message={alertMessage} onClose={() => setShowAlert(false)} />
+            </View>
+          </View>
+        )}
+      </ScrollView >
+    </View >
   );
 };
 
@@ -174,6 +188,25 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_medium,
     color: COLORS.primaryWhiteHex
   },
+  customAlertContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999,
+  },
+  modalBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 999
+  }
 });
 
 export default DetailsScreen;

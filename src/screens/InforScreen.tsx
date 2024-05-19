@@ -31,7 +31,12 @@ function InforScreen() {
     const handleLogout = () => {
         auth()
             .signOut()
-            .then(() => navigation.navigate('Login'));
+            .then(() => {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }],
+                });
+            });
     };
 
     return (

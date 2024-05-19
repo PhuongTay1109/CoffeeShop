@@ -8,10 +8,10 @@ import {
     TouchableOpacity,
     Platform,
     KeyboardAvoidingView,
-    ScrollView,
     TouchableWithoutFeedback,
     Keyboard,
     Alert,
+    ActivityIndicator,
 }
     from "react-native";
 
@@ -27,6 +27,7 @@ import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import getFirestore from "@react-native-firebase/firestore";
 import CoffeeData from "../data/CoffeeData";
+import CustomAlert from "../components/CustomAlert";
 
 const isTestMode = true;
 const initialState = {
@@ -50,6 +51,16 @@ const SignupScreen = () => {
 
     const togglePasswordVisibility = () => {
         setHidePassword(!hidePassword);
+    };
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
+    const handleAlertClose = () => {
+        setShowAlert(false);
+        if (redirectToLogin) {
+            navigation.navigate('Login');
+        }
     };
 
     const inputChangedHandler = useCallback((inputId: any, inputValue: any) => {
@@ -79,13 +90,13 @@ const SignupScreen = () => {
             );
 
             const user = auth().currentUser;
-            
+
             if (user) {
                 await user.updateProfile({
                     displayName: formState.inputValues.username
                 });
             }
-            
+
             const preparedData = CoffeeData.map((item, index) => {
                 return { ...item, index };
             });
@@ -98,14 +109,21 @@ const SignupScreen = () => {
                 OrderHistoryList: []
             });
 
+            setIsLoading(true);
+            setRedirectToLogin(true);
+            setAlertMessage('You have successfully registered an account. Please login first!');
+            setShowAlert(true);
             setIsLoading(false);
-            navigation.navigate('Login');
         } catch (error: any) {
             setIsLoading(false);
             if (error.code === 'auth/email-already-in-use') {
-                Alert.alert('That email address is already in use!');
+                setAlertMessage('That email address is already in use!');
+                setShowAlert(true);
             }
-            Alert.alert(error);
+            else {
+                setAlertMessage('An error occurred while signing up. Please try again later.');
+                setShowAlert(true);
+            }
         }
     };
 
@@ -119,6 +137,11 @@ const SignupScreen = () => {
 
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={styles.container}>
+                    {isLoading && (
+                        <View style={styles.loadingOverlay}>
+                            <ActivityIndicator size="large" color={COLORS.primaryOrangeHex} />
+                        </View>
+                    )}
                     <View>
                         <Image
                             source={require("../assets/app_images/coffee-branch.jpg")}
@@ -181,6 +204,13 @@ const SignupScreen = () => {
                             </Text>
                         </TouchableOpacity>
                     </View>
+                    {showAlert && (
+                        <View style={styles.modalBackground}>
+                            <View style={styles.customAlertContainer}>
+                                <CustomAlert message={alertMessage} onClose={handleAlertClose} />
+                            </View>
+                        </View>
+                    )}
                 </SafeAreaView>
             </TouchableWithoutFeedback>
             </ScrollView>
@@ -229,6 +259,31 @@ const styles = StyleSheet.create({
         right: 50,
         transform: [{ translateY: -20 }]
     },
+    customAlertContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 9999,
+    },
+    modalBackground: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 999
+    },
+    loadingOverlay: {
+        ...StyleSheet.absoluteFillObject, // Đặt overlay full màn hình
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Lớp mờ trắng
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 });
 
 export default SignupScreen;
