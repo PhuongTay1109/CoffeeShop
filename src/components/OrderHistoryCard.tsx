@@ -11,7 +11,7 @@ import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
 import OrderItemCard from './OrderItemCard';
 
 const OrderHistoryCard = (props: any) => {
-  const { orderItems, totalAmount, orderTime} = props;
+  const { orderItems, totalAmount, orderTime, phoneNumber, address} = props;
   return (
     <View style={styles.CardContainer}>
       <View style={styles.CardHeader}>
@@ -22,6 +22,21 @@ const OrderHistoryCard = (props: any) => {
         <View style={[styles.HeaderItem, styles.PriceContainer]}>
           <Text style={styles.HeaderTitle}>Total Amount</Text>
           <Text style={styles.HeaderPrice}>${totalAmount.toFixed(2)}</Text>
+        </View>
+      </View>
+      <View style={styles.InfoHeader}>
+        <View style={styles.InfoItem}>
+          <Text style={styles.HeaderTitle}>Phone number : 
+            <Text style={styles.HeaderSubtitle}> {phoneNumber}</Text>
+          </Text>
+         
+        </View>
+      </View>
+      <View style={styles.InfoHeader}>
+        <View style={styles.InfoItem}>
+          <Text style={styles.HeaderTitle}>Address : 
+            <Text style={styles.HeaderSubtitle}> {address}</Text>
+          </Text>
         </View>
       </View>
       <View style={styles.ListContainer}>
@@ -44,6 +59,10 @@ const OrderHistoryCard = (props: any) => {
 const styles = StyleSheet.create({
   CardContainer: {
     gap: SPACING.space_10,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    borderColor: COLORS.primaryOrangeHex
   },
   CardHeader: {
     flexDirection: 'row',
@@ -51,9 +70,16 @@ const styles = StyleSheet.create({
     gap: SPACING.space_20,
     alignItems: 'center',
   },
+  InfoHeader: {
+    flexDirection: 'row',
+    gap: SPACING.space_20,
+    justifyContent: 'flex-start',
+  },
+  InfoItem: {
+    flex: 1
+  },
   HeaderItem: {
-    flex: 1,
-    alignItems: 'center',
+    flex: 1
   },
   HeaderTitle: {
     fontFamily: FONTFAMILY.poppins_semibold,

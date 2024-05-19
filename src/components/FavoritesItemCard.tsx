@@ -12,7 +12,7 @@ import {
 } from '../theme/theme';
 
 const FavoritesItemCard = (props: any) => {
-  const {id, index, imagelink_portrait, name, average_rating, roasted, description, favourite} = props;
+  const {id, index, imagelink_portrait, name, average_rating, roasted, description, favourite, special_ingredient} = props;
   return (
     <View style={styles.CardContainer}>
        <ImageBackgroundInfo
@@ -25,6 +25,7 @@ const FavoritesItemCard = (props: any) => {
           index={index}
           removeFavourite={props.removeFavourite}
           showLeftIcon={false}
+          special_ingredient={special_ingredient}
         />
       <LinearGradient
         start={{x: 0, y: 0}}

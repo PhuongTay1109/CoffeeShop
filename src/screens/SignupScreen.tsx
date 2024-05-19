@@ -133,6 +133,8 @@ const SignupScreen = () => {
             style={{ flex: 1 }}
             enabled={Platform.OS === 'ios'}
         >
+            <ScrollView>
+
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={styles.container}>
                     {isLoading && (
@@ -211,6 +213,7 @@ const SignupScreen = () => {
                     )}
                 </SafeAreaView>
             </TouchableWithoutFeedback>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 };

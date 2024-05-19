@@ -319,7 +319,6 @@ const HomeScreen = ({ navigation }: any) => {
 
                     {/* Coffee list */}
                     <FlatList
-                        horizontal={true}
                         ref={ListRef}
                         ListEmptyComponent={
                             <View style={styles.EmptyListContainer}>

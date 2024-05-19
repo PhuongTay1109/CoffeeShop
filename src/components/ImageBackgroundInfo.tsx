@@ -29,12 +29,9 @@ const ImageBackgroundInfo = (props: any) => {
   const navigation: NavigationProp<any> = useNavigation();
 
   // Handle left press
-  const goBack = () => {
-    if(is_from_favourites_screen) {
-      navigation.goBack();
-    }
-    navigation.navigate('Tab');
-    if(props.reloadData != undefined)
+  const goBackToHomePage = () => {
+    navigation.goBack();
+    if(props.reloadData)
       props.reloadData();
   };
 
